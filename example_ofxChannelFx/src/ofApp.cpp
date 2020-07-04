@@ -10,7 +10,8 @@ void ofApp::setup() {
 	//webcam
 	int _d = 0;
 	vidGrabber.setDeviceID(_d);
-	vidGrabber.setup(640, 480);
+	vidGrabber.setup(1920,1080);
+	//vidGrabber.setup(640, 480);
 
 	bEnableFx.set("FX", true);
 
@@ -52,10 +53,16 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::drawCam() {
-	float _ratioSource = vidGrabber.getWidth() / vidGrabber.getHeight();
-	float _ratioScreen = ofGetWidth() / (float)ofGetHeight();
-	float _ratio = _ratioScreen / _ratioSource;
-	vidGrabber.draw(0, 0, ofGetHeight() * _ratio, ofGetHeight());
+	//float _ratioSource = vidGrabber.getWidth() / vidGrabber.getHeight();
+	//float _ratioScreen = ofGetWidth() / (float)ofGetHeight();
+	//float _ratio = _ratioScreen / _ratioSource;
+	//vidGrabber.draw(0, 0, ofGetHeight() * _ratio, ofGetHeight());
+	//vidGrabber.draw(0, 0, ofGetWidth(), ofGetHeight());
+	{
+		ofRectangle r(0, 0, vidGrabber.getWidth(), vidGrabber.getHeight());
+		r.scaleTo(ofGetWindowRect());
+		vidGrabber.draw(r.x, r.y, r.width, r.height);
+	}
 }
 
 ////--------------------------------------------------------------

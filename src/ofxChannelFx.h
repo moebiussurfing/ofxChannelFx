@@ -6,7 +6,18 @@
 
 //--
 
+//
+//	TODO:
+//
+//	+	improve workflow: add enablers with name. fx selector: maximize current and collapse other panels
+//	+	extra fx?
+//
+
+//--
+
 //#define INCLUDE_FX_DELAYS
+
+//-
 
 #define INCLUDE_DOT_FRAG
 #ifdef INCLUDE_DOT_FRAG
@@ -26,7 +37,7 @@ private:
 
 	string path_GLOBAL_Settings;
 	string path_fileName_VideoFX;// = path_GLOBAL_Settings + "videoFX.json";
-//
+
 //	bool ENABLE_Active = true;
 //	bool ENABLE_Keys = true;
 

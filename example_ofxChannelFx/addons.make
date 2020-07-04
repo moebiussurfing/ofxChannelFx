@@ -1,5 +1,5 @@
-ofxGui
 ofxChannelFx
 ofxDotFrag
+ofxGui
 ofxGuiExtended2
 ofxWindowApp
