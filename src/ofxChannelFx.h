@@ -1,285 +1,238 @@
 //
-// Created by mosbiusurfing on 2019-12-20.
+// Created by moebiussurfing on 2019-12-20.
 //
+
+///	
+///	TODO:
+///	
+///	+	add another paramGroup and move there all settings that must be recalled but not required on gui
+///	+	extra fx: gpu lut?
+///	
+
 
 #pragma once
+#include "ofMain.h"
 
-//--
 
+//----
 //
-//	TODO:
+//#define INCLUDE_FX_DELAYS	//extra fx
 //
-//	+	improve workflow: add enablers with name. fx selector: maximize current and collapse other panels
-//	+	extra fx?
-//
+//----
 
-//--
 
-//#define INCLUDE_FX_DELAYS
-
-//-
-
-#define INCLUDE_DOT_FRAG
-#ifdef INCLUDE_DOT_FRAG
+//fx shaders
 #include "ofxDotFrag.h"
+
+//gui
+//#define INCLUDE_ofxGuiExtended2
+//#ifdef INCLUDE_ofxGuiExtended2
+#include "ofxGuiExtended2.h"
+//#endif
+//TODO: could add simpler ofxGui maybe..
+
+//optional presets manager
+#define INCLUDE_ofxPresetsManager
+#ifdef INCLUDE_ofxPresetsManager
+#include "ofxPresetsManager.h"
 #endif
 
-////--
-//
-#include "ofMain.h"
-#include "ofxGuiExtended2.h"
-//#include "ofxPresetsManager.h"
-//
 class ofxChannelFx
 {
-//
-private:
-
-	string path_GLOBAL_Settings;
-	string path_fileName_VideoFX;// = path_GLOBAL_Settings + "videoFX.json";
-
-//	bool ENABLE_Active = true;
-//	bool ENABLE_Keys = true;
 
 public:
-	ofParameter<glm::vec2> gPos;
-	glm::vec2 getGuiPosition()
-	{
-		//glm::vec2 gPos = glm::vec2(panel_ENGINE->getPosition().x, panel_ENGINE->getPosition().y);
-		return gPos.get();
-	}
-	void setGuiPosition(glm::vec2 pos) {
-		gPos = pos;
-		gui_VideoFx->setPosition(gPos.get().x, gPos.get().y);
-	}
-	//float getGuiWidth()
-	//{
-	//	float gwidth = panel_ENGINE->getWidth();
-	//	return gwidth;
-	//}
-
-public:
-
 	ofxChannelFx() {};
 	~ofxChannelFx()
 	{
 		//exit();
 	};
-//
-//	//----
-//
-//	//API
-//
-//public:
-//
-//	void loadPreset(int p)
-//	{
-//		//cout << "loadPreset:" << p << endl;
-//		presetsManager.loadPreset(p);
-//	}
-//
-//	void setActive(bool b);
-//	void setKeysEnable(bool b);
-//	void setGuiVisible(bool b);
-//
-//	//TODO:
-//	void setUserVisible(bool b)
-//	{
-//		//presets
-//		presetsManager.setVisible_PresetClicker(b);
-//		presetsManager.setEnableKeys(b);
-//	}
-//
-//	void setMODE_App(int m)
-//	{
-//		MODE_App = m;
-//	}
-//
-//	//auto hide controlled outside the class. internal by default
-//	void setAudoHideExternal(bool b)
-//	{
-//		ENABLE_AutoHide_external = b;
-//	}
-//
-//	void setAudoHide(bool b)
-//	{
-//		ENABLE_AutoHide = b;
-//		//lastMovement = ofGetSystemTimeMillis();
-//	}
-//
-//	//bool isPlaying_GEN()
-//	//{
-//	//	return GEN.isPlaying();
-//	//}
-//
-//	void setPlay(bool b)
-//	{
-//		PLAYING = b;
-//	}
-//	bool isPlaying()
-//	{
-//		return PLAYING;
-//	}
-//
-//#ifdef USE_GEN_PLAYER
-//	void setPlay_GEN(bool b)
-//	{
-//		if (b)
-//			GEN.play();
-//		else
-//			GEN.stop();
-//	}
-//
-//	bool isPlaying_GEN()
-//	{
-//		return GEN.isPlaying();
-//	}
-//
-//	bool get_GEN_EditorMode()
-//	{
-//		return SHOW_GEN.get();
-//	}
-//#endif
-//
-//	//--
-//
-//private:
-//
-//	//--
-//
-#ifdef INCLUDE_DOT_FRAG
-	void setup_DotFrag();
-	void update_DotFrag();
-	void refreshGuiDotFrag();
-	
+
+	//----
+
+	//API
+
+private:
+	ofParameter<glm::vec2> gPos;
+
+public:
+	glm::vec2 getGuiPosition()
+	{
+		gPos = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
+		return gPos.get();
+	}
+	void setGuiPosition(glm::vec2 pos) {
+		gPos = pos;
+		guiPanel->setPosition(gPos.get().x, gPos.get().y);
+	}
+	float getGuiWidth()
+	{
+		float _gwidth = guiPanel->getWidth();
+		return _gwidth;
+	}
+
+	//bool ENABLE_Active = true;
+	//bool ENABLE_Keys = true;
+	//void setActive(bool b);
+	//void setKeysEnable(bool b);
+	//void setGuiVisible(bool b);
+	//
+	//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
+	//	ofEventListener listener_SHOW_gui;
+	//	void Changed_SHOW_gui();
+	//
+	//	ofParameter<int> MODE_App;
+	//	ofEventListener listener_MODE_App;
+	//	void Changed_MODE_App();
+	//
+	//public:
+	//
+	//	void loadPreset(int p)
+	//	{
+	//		//cout << "loadPreset:" << p << endl;
+	//		presetsManager.loadPreset(p);
+	//	}
+	//	void setUserVisible(bool b)
+	//	{
+	//		//presets
+	//		presetsManager.setVisible_PresetClicker(b);
+	//		presetsManager.setEnableKeys(b);
+	//	}
+	//
+	//	void setMODE_App(int m)
+	//	{
+	//		MODE_App = m;
+	//	}
+
+	//--
+
+private:
+	void setup_FxChannel();
+	void update_FxChannel();
+	void refreshGui_FxChannel();
+	void setup_GuiTheme();
+
+	//feed the fx processor
+public:
 	void begin();
 	void end();
 
-	ofParameter<bool> ENABLE_DOT_FX;
-	ofParameter<bool> SHOW_DOT_FX;
-	ofParameter<int> SELECT_Fx{ "FX", 0, 0, 3 };
-	ofParameterGroup params_Control_VideoFX;//only to use callback for fx selector
-	ofParameterGroup params_VideoFX;
-	void Changed_params_VideoFX(ofAbstractParameter &e);
+	ofParameter<bool> ENABLE_FxChain;//main enabler toggle
 
-	//ofxGui
-	//ofxPanel gui_VideoFx;
+private:
+	//ofParameter<bool> SHOW_DOT_FX;
+	ofParameter<int> SELECT_Fx{ "SELECT FX", 0, 0, 3 };	//select the fx to edit/show gui panel
+	ofParameter<string> SELECT_Fx_Name{ "FX","" };		//fx name
+	ofParameter<bool> SELECT_Solo{ "SOLO", false };		//mute the other fx
+	ofParameter<bool> RESET{ "RESET", false };			//reset selected fx
+	ofParameter<bool> bHeader{ "HEADER", false };
+	ofParameter<bool> bMinimize{ "MINIMIZE", false };
+	//ofParameter<void> bMinimize{ "MINIMIZE" };
 
-	ofFbo fbo_VideoFx;
+	ofParameter<bool> ENABLE_Monochrome;
+	ofParameter<bool> ENABLE_ThreeTones;
+	ofParameter<bool> ENABLE_HSB;
+#ifdef INCLUDE_FX_DELAYS
+	ofParameter<bool> ENABLE_Delay;
+	ofParameter<bool> ENABLE_Echotrace;
+#endif
 
-	//fx
+	ofParameterGroup params_Session;
+	ofParameterGroup params_Editor;
+	ofParameterGroup params_Preset;
+	ofParameterGroup params_Control;
+
+	//callbacks
+	void Changed_params_Control(ofAbstractParameter &e);
+	bool DISABLE_Callbacks;
+
+	//--
+
+private:
+	ofFbo fbo_FxChain;
+
+	bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
+
+	//basic fx
 	ofx::dotfrag::Monochrome frag1;
 	ofx::dotfrag::ThreeTones frag2;
 	ofx::dotfrag::HSB frag3;
 
+	//fx extra
 #ifdef INCLUDE_FX_DELAYS
 	ofx::dotfrag::Delay frag4;
 	ofx::dotfrag::EchoTrace frag5;
 	//ofx::dotfrag::Twist frag6;
 #endif
 
-#endif
+	//--
 
-//	//-
-//
-//public:
-//
+public:
 	void setup();
-	void update();
+	//void update();
 	void draw();
-	void drawGui();
 	void exit();
-//
-//	void keyPressed(int key);
-//	void mouseMoved(int x, int y);
-//	void mouseDragged(int x, int y, int button);
-//	void mousePressed(int x, int y, int button);
-//	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
-//	void dragEvent(ofDragInfo dragInfo);
-//	//void mouseEntered(int x, int y);
-//	//void mouseExited(int x, int y);
-//	//void gotMessage(ofMessage msg);
-//
-//private:
-//	void startup();
-//	void updateVideoPLayer();
-//	//void updateScene();
-//	//void drawVideoEffected();
-//
-//public:
-//	void draw_Gui();
-//	void draw_Video();
-//	void draw_VideoControls();
-//
-//private:
-//	//customize guiExtended
-//	void customizeGuiSettingsDefine();
-//	void customizeGuiSettingsApply();
-//	bool bLoadedGuiFont = false;
-//	ofJson jConf_Font;
-//	ofJson jConf_Global;
-//	ofJson jConf_BigBut1;//center text
-//	ofJson jConf_BigBut2;//highlighted
-//	ofJson jConf_BigBut3;//play
-//	ofJson jConf_Labl;//labels
-//	ofJson jConf_Highligthed;//highlighted color
-//	ofJson jConf_Labl_Hide;//labels
-//
-//
-//private:
-//	//preset params
-//	ofParameterGroup APP_params;
-//
-//	//-
-//
-//	//labels
-//	//ofTrueTypeFont myFont;
-//	string myTTF;// gui font for all gui theme
-//	int sizeTTF;
-//	string fname;
-//
-//	//--
+	
+	ofParameter<int> window_W, window_H, window_X, window_Y;
+
+	//void drawGui();
+
+private:
+	void startup();
+
+	////labels
+	////ofTrueTypeFont myFont;
+	//string myTTF;// gui font for all gui theme
+	//int sizeTTF;
+	//string fname;
 
 	//gui
+private:
 	ofxGui gui;
-	//ofxGuiGroup2 *panel_ENGINE;
+	ofxGuiPanel *guiPanel;
+	ofxGuiGroup2 *guiGroup;
+	ofxGuiGroup2 *gui_FxUser;
+	ofxGuiGroup2 *gui_FxEdit;
 
-#ifdef INCLUDE_DOT_FRAG
-	ofxGuiGroup2 *gui_VideoFx;
+	//basic fx
 	ofxGuiGroup2 *gFrag1;
 	ofxGuiGroup2 *gFrag2;
 	ofxGuiGroup2 *gFrag3;
+	//extra extra
+#ifdef INCLUDE_FX_DELAYS
 	ofxGuiGroup2 *gFrag4;
 	ofxGuiGroup2 *gFrag5;
+	//ofxGuiGroup2 *gFrag6;
 #endif
-//
-//	//video
-//	ofParameter<string> videoFilePath;
-//	ofParameter<string> videoName;
-//
-//	//--
-//
-//	//presetsManager
-//	//start/finish video loops and more
-//	void setup_PresetsManager();
-//	ofxPresetsManager presetsManager;
-//	ofParameterGroup params_ENGINE_Store;
-//
-//	//--
-//
-//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
-//	ofEventListener listener_SHOW_gui;
-//	void Changed_SHOW_gui();
-//
-//	ofParameter<int> MODE_App;
-//	ofEventListener listener_MODE_App;
-//	void Changed_MODE_App();
-//
+
+	//customize
+	ofJson j_ButtonBig, j_SliderBig;
+
+	//--
+
+	//simpler gui
+	//ofxGui
+	//ofxPanel gui_FxUser;
+
+	//--
+
+	//presetsManager
+#ifdef INCLUDE_ofxPresetsManager
+private:
+	ofxPresetsManager presetsManager;
+	void setup_PresetsManager();
+	ofParameterGroup params_PresetsManagerTools{ "> PRESETS" };
+	ofxGuiGroup2* gui_FxPresets;
+#endif
+
+	//--
+
 	//settings
-	//string path_fileName_AppSettings;
+private:
+	string path_GLOBAL_Settings;
+	string path_fileName_Preset;
+	string path_fileName_Session;
+
 	void saveGroup(ofParameterGroup &g, string path);
 	void loadGroup(ofParameterGroup &g, string path);
-//
-	ofParameter<int> window_W, window_H, window_X, window_Y;
 };
