@@ -8,7 +8,7 @@ void ofApp::setup() {
 #endif
 
 	//webcam
-	int _d = 1;//select cam device
+	int _d = 0;//select cam device
 	vidGrabber.setDeviceID(_d);
 	vidGrabber.setup(1920, 1080);
 

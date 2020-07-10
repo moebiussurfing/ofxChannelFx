@@ -1,17 +1,11 @@
 #include "ofxChannelFx.h"
 
-
-
 //--------------------------------------------------------------
 void ofxChannelFx::setup()
 {
 
 	DISABLE_Callbacks = true;
 
-	//settings folder
-	path_GLOBAL_Settings = "ofxChannelFx";
-	path_fileName_Session = "ofxChannelFx_Session.xml";
-	path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
 
 	//-
 
@@ -90,10 +84,10 @@ void ofxChannelFx::startup()
 
 	//load settings
 
-	loadGroup(params_Session, path_GLOBAL_Settings + "/" + path_fileName_Session);
+	loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
-	loadGroup(params_Preset, path_GLOBAL_Settings + "/" + path_fileName_Preset);
+	loadGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
 #endif
 
 	guiPanel->setShowHeader(bHeader.get());//required bc is not on xml settings
@@ -292,7 +286,7 @@ void ofxChannelFx::setup_FxChannel()
 void ofxChannelFx::setup_PresetsManager()
 {
 	//customize
-	presetsManager.setPath_GlobalFolder(path_GLOBAL_Settings + "/ofxPresetsManager");
+	presetsManager.setPath_GlobalFolder(path_GLOBAL_Folder + "/ofxPresetsManager");
 	presetsManager.setPath_KitFolder("presets");
 	presetsManager.setPath_PresetsFolder("archive");
 	presetsManager.setPath_ControlSettings("settings");
@@ -320,8 +314,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			ofLogNotice(__FUNCTION__) << name << " : " << e;
 		}
 
-		if (false) {
-		}
+		if (false) {}
 
 		//----
 
@@ -329,6 +322,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		else if (name == "SELECT FX")
 		{
+			//if solo mutes all and enables selected
 			if (SELECT_Solo.get())
 			{
 				frag1.active = false;
@@ -338,7 +332,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				frag4.active = false;
 				frag5.active = false;
 #endif
-
 				switch (SELECT_Fx.get())
 				{
 				case 1:
@@ -364,6 +357,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				}
 			}
 
+			//set the name for selected
 			switch (SELECT_Fx.get())
 			{
 			case 0:
@@ -391,10 +385,10 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				SELECT_Fx_Name = "ECHOTRACE";
 				break;
 #endif
-
 			}
 
 			//workflow
+			//maximize edit if minimized
 			if (gui_FxEdit->getMinimized())
 			{
 				gui_FxEdit->maximize();
@@ -402,6 +396,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 			//--
 
+			//TODO:
 			refreshGui_FxChannel();
 
 			//--
@@ -445,7 +440,8 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 #endif
 				}
 			}
-			else {//TODO: to improve workflow we should restore previous (PRE) states...
+			else //TODO: to improve workflow we should restore previous (PRE) states...
+			{
 				switch (SELECT_Fx.get())
 				{
 				case 1:
@@ -478,6 +474,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					SELECT_Fx = 1;
 				}
 			}
+			refreshGuiCollapse_FxChannel();
 		}
 		else if (name == "ENABLE THREETONES")
 		{
@@ -486,6 +483,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					SELECT_Fx = 2;
 				}
 			}
+			refreshGuiCollapse_FxChannel();
 		}
 		else if (name == "ENABLE HSB")
 		{
@@ -494,6 +492,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					SELECT_Fx = 3;
 				}
 			}
+			refreshGuiCollapse_FxChannel();
 		}
 #ifdef INCLUDE_FX_DELAYS
 		else if (name == "ENABLE DELAY")
@@ -503,6 +502,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					SELECT_Fx = 4;
 				}
 			}
+			refreshGuiCollapse_FxChannel();
 		}
 		else if (name == "ENABLE ECHOTRACE")
 		{
@@ -511,6 +511,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					SELECT_Fx = 5;
 				}
 			}
+			refreshGuiCollapse_FxChannel();
 		}
 #endif
 
@@ -743,15 +744,13 @@ void ofxChannelFx::setup_GuiTheme()
 
 	g0 = gFrag2->getGroup("COLOR 0");
 	auto a0 = g0->getControl("a");
-	a0->setEnabled(false);
-
+	a0->setHidden(true);
 	g1 = gFrag2->getGroup("COLOR 1");
 	auto a1 = g1->getControl("a");
-	a1->setEnabled(false);
-
+	a1->setHidden(true);
 	g2 = gFrag2->getGroup("COLOR 2");
 	auto a2 = g2->getControl("a");
-	a2->setEnabled(false);
+	a2->setHidden(true);
 
 	//-
 
@@ -787,6 +786,7 @@ void ofxChannelFx::setup_GuiTheme()
 	//(gui_FxUser->getControl(SELECT_Fx_Name.getName()))->setConfig(j_TextBig);
 
 	(guiGroup->getControl(ENABLE_FxChain.getName()))->setConfig(j_ButtonBig);
+	(guiGroup->getControl(ENABLE_FxChain.getName()))->setConfig({ {"text-align", "center"} });
 
 	//1. user
 	//(gui_FxUser->getControl(SELECT_Fx_Name.getName()))->setConfig(j_SliderBig);
@@ -805,6 +805,49 @@ void ofxChannelFx::setup_GuiTheme()
 #endif
 
 	//-
+}
+
+//--------------------------------------------------------------
+void ofxChannelFx::refreshGuiCollapse_FxChannel() {
+	ofLogNotice(__FUNCTION__);
+
+	//all fx disabled
+	if ((!ENABLE_Monochrome.get()) && (!ENABLE_HSB.get()) && (!ENABLE_ThreeTones.get())
+#ifdef INCLUDE_FX_DELAYS
+		&& (!ENABLE_Delay.get()) && (!ENABLE_Echotrace.get())
+#endif
+		)
+	{
+		gFrag1->minimize();
+		gFrag2->minimize();
+		gFrag3->minimize();
+#ifdef INCLUDE_FX_DELAYS
+		gFrag4->minimize();
+		gFrag5->minimize();
+#endif
+	}
+	//if some fx enabled and all are minimized
+	else if (
+		gFrag1->getMinimized() &&
+		gFrag2->getMinimized() &&
+		gFrag3->getMinimized() 
+#ifdef INCLUDE_FX_DELAYS
+		&& gFrag4->getMinimized() &&
+		gFrag5->getMinimized() &&
+#endif
+		)
+	{
+		switch (SELECT_Fx.get())
+		{
+		case 1:	if (ENABLE_Monochrome.get()) gFrag1->maximize(); break;
+		case 2:	if (ENABLE_ThreeTones.get()) gFrag2->maximize(); break;
+		case 3:	if (ENABLE_HSB.get()) gFrag3->maximize(); break;
+#ifdef INCLUDE_FX_DELAYS
+		case 4:	if (ENABLE_Delay.get()) gFrag4->maximize(); break;
+		case 5:	if (ENABLE_Echotrace.get()) gFrag5->maximize(); break;
+#endif
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -832,18 +875,12 @@ void ofxChannelFx::refreshGui_FxChannel()
 	{
 		switch (SELECT_Fx.get())
 		{
-			//case 0:
-			//{
-			//	bMinimize = true;
-			//}
-			//break;
-		case 1:	gFrag1->maximize(); break;
-		case 2:	gFrag2->maximize(); break;
-		case 3:	gFrag3->maximize(); break;
+		case 1:	if (ENABLE_Monochrome.get()) gFrag1->maximize(); break;
+		case 2:	if (ENABLE_ThreeTones.get()) gFrag2->maximize(); break;
+		case 3:	if (ENABLE_HSB.get()) gFrag3->maximize(); break;
 #ifdef INCLUDE_FX_DELAYS
-		case 4:	gFrag4->maximize(); break;
-		case 5:	gFrag5->maximize(); break;
-			//case 6: gFrag6->maximize(); break;
+		case 4:	if (ENABLE_Delay.get()) gFrag4->maximize(); break;
+		case 5:	if (ENABLE_Echotrace.get()) gFrag5->maximize(); break;
 #endif
 		}
 	}
@@ -861,9 +898,9 @@ void ofxChannelFx::exit()
 
 	//settings 
 
-	saveGroup(params_Session, path_GLOBAL_Settings + "/" + path_fileName_Session);
+	saveGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
-	saveGroup(params_Preset, path_GLOBAL_Settings + "/" + path_fileName_Preset);
+	saveGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
 #endif
 }

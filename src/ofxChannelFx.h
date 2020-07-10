@@ -41,29 +41,46 @@ class ofxChannelFx
 {
 
 public:
-	ofxChannelFx() {};
+	ofxChannelFx() {
+		//settings folder
+		path_GLOBAL_Folder = "ofxChannelFx";
+		path_fileName_Session = "ofxChannelFx_Session.xml";
+		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
+	};
+
 	~ofxChannelFx()
 	{
 		//exit();
 	};
 
+private:
+	ofParameter<glm::vec2> gPos;
+
 	//----
 
 	//API
 
-private:
-	ofParameter<glm::vec2> gPos;
-
 public:
+
+	//--------------------------------------------------------------
+	void setPath_GlobalFolder(string folder)
+	{
+		ofLogNotice(__FUNCTION__) << folder;
+		path_GLOBAL_Folder = folder;
+		CheckFolder(folder);
+	}
+	//--------------------------------------------------------------
 	glm::vec2 getGuiPosition()
 	{
 		gPos = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
 		return gPos.get();
 	}
+	//--------------------------------------------------------------
 	void setGuiPosition(glm::vec2 pos) {
 		gPos = pos;
 		guiPanel->setPosition(gPos.get().x, gPos.get().y);
 	}
+	//--------------------------------------------------------------
 	float getGuiWidth()
 	{
 		float _gwidth = guiPanel->getWidth();
@@ -109,6 +126,7 @@ private:
 	void setup_FxChannel();
 	void update_FxChannel();
 	void refreshGui_FxChannel();
+	void refreshGuiCollapse_FxChannel();//check if no fx enabled, then collapse all gui panels
 	void setup_GuiTheme();
 
 	//feed the fx processor
@@ -229,10 +247,36 @@ private:
 
 	//settings
 private:
-	string path_GLOBAL_Settings;
+	string path_GLOBAL_Folder;
 	string path_fileName_Preset;
 	string path_fileName_Session;
 
 	void saveGroup(ofParameterGroup &g, string path);
 	void loadGroup(ofParameterGroup &g, string path);
+
+private:
+	//--------------------------------------------------------------
+	void CheckFolder(string _path)
+	{
+		ofLogNotice(__FUNCTION__) << _path;
+
+		ofDirectory dataDirectory(ofToDataPath(_path, true));
+
+		//check if folder path exist
+		if (!dataDirectory.isDirectory())
+		{
+			ofLogError(__FUNCTION__) << "FOLDER NOT FOUND! TRYING TO CREATE...";
+
+			//try to create folder
+			bool b = dataDirectory.createDirectory(ofToDataPath(_path, true));
+
+			//debug if creation has been succeded
+			if (b) ofLogNotice(__FUNCTION__) << "CREATED '" << _path << "'  SUCCESSFULLY!";
+			else ofLogError(__FUNCTION__) << "UNABLE TO CREATE '" << _path << "' FOLDER!";
+		}
+		else
+		{
+			ofLogNotice(__FUNCTION__) << "OK! LOCATED FOLDER: '" << _path << "'";//nothing to do
+		}
+	}
 };
