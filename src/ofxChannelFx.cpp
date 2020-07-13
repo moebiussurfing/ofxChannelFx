@@ -287,9 +287,9 @@ void ofxChannelFx::setup_PresetsManager()
 {
 	//customize
 	presetsManager.setPath_GlobalFolder(path_GLOBAL_Folder + "/ofxPresetsManager");
-	presetsManager.setPath_KitFolder("presets");
-	presetsManager.setPath_PresetsFolder("archive");
-	presetsManager.setPath_ControlSettings("settings");
+	//presetsManager.setPath_KitFolder("presets");
+	//presetsManager.setPath_PresetsFolder("archive");
+	//presetsManager.setPath_ControlSettings("settings");
 
 	//user clicker
 	presetsManager.setVisible_PresetClicker(true);

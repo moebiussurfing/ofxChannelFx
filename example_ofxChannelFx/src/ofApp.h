@@ -35,4 +35,7 @@ class ofApp : public ofBaseApp{
 #ifdef USE_ofxWindowApp
 		ofxWindowApp windowApp;
 #endif
+
+		int _d;
+		std::string _dName;
 };

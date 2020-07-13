@@ -7,6 +7,11 @@
 ///	
 ///	+	add another paramGroup and move there all settings that must be recalled but not required on gui
 ///	+	extra fx: gpu lut?
+///	+	reduce callbacks
+///	
+///	BUG:
+///	
+///	+	when changing preset gui refreshes bad.
 ///	
 
 
