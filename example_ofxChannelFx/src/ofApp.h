@@ -10,6 +10,15 @@
 #endif
 
 class ofApp : public ofBaseApp{
+	public:
+		//webcam
+		ofVideoGrabber vidGrabber;
+		void setupWebcamDevice();
+		void drawWebcamInfo();
+		void exitWebcam();
+		void drawWebcam();
+		ofParameter <std::string> _dName{ "WEBCAM_DEVICE_NAME", "" };
+		int _d;
 
 	public:
 		void setup();
@@ -19,14 +28,11 @@ class ofApp : public ofBaseApp{
 		void keyPressed(int key);
 		void windowResized(int w, int h);
 
+		//ofxChannelFx
 		ofxChannelFx channelFx;
 
 		//draw
 		void drawScene();
-
-		//webcam
-		void drawWebcam();
-		ofVideoGrabber vidGrabber;
 		
 		//3D scene
 		void draw3D();
@@ -35,7 +41,9 @@ class ofApp : public ofBaseApp{
 #ifdef USE_ofxWindowApp
 		ofxWindowApp windowApp;
 #endif
+		int _prim = 0;
+		ofBoxPrimitive box;
+		ofConePrimitive cone;
 
-		int _d;
-		std::string _dName;
+		ofTrueTypeFont font;
 };
