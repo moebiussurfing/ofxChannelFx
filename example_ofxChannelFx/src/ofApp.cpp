@@ -11,12 +11,15 @@ void ofApp::setup() {
 
 	//--
 
+
 	//prims
+	
 	//box
 	float _size = 100;
 	box.set(_size);
 	box.setPosition(0, _size * 0.5, 0);
 	box.setResolution(1);
+
 	//cone
 	float _cSize = 1.62 * _size;
 	cone.set(_size, _cSize, 3, 1, 1);
@@ -27,6 +30,25 @@ void ofApp::setup() {
 	cam.enableOrtho();
 	cam.setFarClip(10000);
 	cam.setNearClip(-10000);
+
+	//--
+
+	//material
+	if (bUseMaterial) {
+		//ofEnableLighting();
+		//ofEnableDepthTest();
+		ofSetSmoothLighting(true);
+		light.setup();
+		light.enable();
+		light.setSpotlight();
+		light.setSpotlightCutOff(50);
+		//light.setPosition(0, 100, 100);
+
+		material.setDiffuseColor(ofColor::red);
+		material.setAmbientColor(ofColor::red);
+		material.setSpecularColor(ofColor::white);
+		material.setShininess(128);
+	}
 
 	//--
 
@@ -72,7 +94,9 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::drawScene() {
+
 	drawWebcam();
+
 	draw3D();
 }
 
@@ -156,18 +180,64 @@ void ofApp::exitWebcam() {
 
 //--------------------------------------------------------------
 void ofApp::draw3D() {
-	ofPushStyle();
-	ofDisableDepthTest();
+	ofEnableDepthTest();
 	ofEnableAlphaBlending();
+
+	ofPushStyle();
 
 	cam.begin();
 	{
+		//-
+
 		int _speed = 60 * 10;
 		ofRotateYDeg(ofMap(ofGetFrameNum() % _speed, 0, _speed, 0, 359));
 
+		//-
+
+		if (bUseMaterial) {
+			//ofEnableDepthTest();
+
+			ofEnableLighting();
+			//light.setPosition(cam.getPosition().x, cam.getPosition().y, cam.getPosition().z);
+			light.setPosition(-200, 200, 200);
+			light.enable();
+
+			//material.begin();
+		}
+		else {
+			//ofDisableDepthTest();
+		}
+
+		//-
+
 		//prims
+		ofFill();
+		ofSetColor(0);
+		//ofSetColor(0, 64);
+		if (_prim == 0) {
+			box.drawFaces();
+		}
+		else if (_prim == 1) {
+			cone.drawFaces();
+		}
+
+		//-
+
+		if (bUseMaterial) {
+			//material.end();
+
+			light.disable();
+			ofDisableLighting();
+
+			//ofDisableDepthTest();
+		}
+
+		//-
+
+		//wire prims
 		ofNoFill();
-		ofSetColor(255, 200);
+		ofSetColor(255);
+		//ofSetColor(255, 200);
 		ofSetLineWidth(2.);
 		if (_prim == 0) {
 			box.drawWireframe();
@@ -175,20 +245,13 @@ void ofApp::draw3D() {
 		else if (_prim == 1) {
 			cone.drawWireframe();
 		}
-
-		//prims
-		ofFill();
-		ofSetColor(0, 64);
-		if (_prim == 0) {
-			box.drawFaces();
-		}
-		else if (_prim == 1) {
-			cone.drawFaces();
-		}
 	}
 	cam.end();
 
 	ofPopStyle();
+
+	ofDisableAlphaBlending();
+	ofDisableDepthTest();
 }
 
 //--------------------------------------------------------------

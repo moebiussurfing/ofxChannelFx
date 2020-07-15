@@ -46,4 +46,9 @@ class ofApp : public ofBaseApp{
 		ofConePrimitive cone;
 
 		ofTrueTypeFont font;
+
+		//material
+		bool bUseMaterial = false;
+		ofLight light;
+		ofMaterial material;
 };
