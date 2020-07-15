@@ -3,9 +3,7 @@
 //--------------------------------------------------------------
 void ofxChannelFx::setup()
 {
-
 	DISABLE_Callbacks = true;
-
 
 	//-
 
@@ -22,6 +20,7 @@ void ofxChannelFx::setup()
 		fboSettings.height = window_H;
 		fboSettings.internalformat = GL_RGBA;
 		fboSettings.textureTarget = GL_TEXTURE_2D;
+		//TODO: check if we can add 3d compatibility..
 		fbo_FxChain.allocate(fboSettings);
 
 		//clear
@@ -101,7 +100,19 @@ void ofxChannelFx::startup()
 	//-
 
 	//refresh
-	refreshGui_FxChannel();
+
+	if (bEnableGuiWorkflow) refreshGui_FxChannel();
+	else {
+		//minimize all
+		gFrag1->minimize();
+		gFrag2->minimize();
+		gFrag3->minimize();
+#ifdef INCLUDE_FX_DELAYS
+		gFrag4->minimize();
+		gFrag5->minimize();
+		//gFrag6->minimize();
+#endif
+	}
 }
 
 ////--------------------------------------------------------------
@@ -397,6 +408,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			//--
 
 			//TODO:
+			//if (bEnableGuiWorkflow) 
 			refreshGui_FxChannel();
 
 			//--
@@ -469,49 +481,49 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		else if (name == "ENABLE MONOCHROME")
 		{
-			if (ENABLE_Monochrome.get()) {
+			if (ENABLE_Monochrome.get() && bEnableGuiWorkflow) {
 				if (SELECT_Fx.get() != 1) {
 					SELECT_Fx = 1;
 				}
+				refreshGuiCollapse_FxChannel();
 			}
-			refreshGuiCollapse_FxChannel();
 		}
-		else if (name == "ENABLE THREETONES")
+		else if (name == "ENABLE THREETONES" && bEnableGuiWorkflow)
 		{
 			if (ENABLE_ThreeTones.get()) {
 				if (SELECT_Fx.get() != 2) {
 					SELECT_Fx = 2;
 				}
+				refreshGuiCollapse_FxChannel();
 			}
-			refreshGuiCollapse_FxChannel();
 		}
-		else if (name == "ENABLE HSB")
+		else if (name == "ENABLE HSB" && bEnableGuiWorkflow)
 		{
 			if (ENABLE_HSB.get()) {
 				if (SELECT_Fx.get() != 3) {
 					SELECT_Fx = 3;
 				}
+				refreshGuiCollapse_FxChannel();
 			}
-			refreshGuiCollapse_FxChannel();
 		}
 #ifdef INCLUDE_FX_DELAYS
-		else if (name == "ENABLE DELAY")
+		else if (name == "ENABLE DELAY" && bEnableGuiWorkflow)
 		{
 			if (ENABLE_Delay.get()) {
 				if (SELECT_Fx.get() != 4) {
 					SELECT_Fx = 4;
 				}
+				refreshGuiCollapse_FxChannel();
 			}
-			refreshGuiCollapse_FxChannel();
 		}
-		else if (name == "ENABLE ECHOTRACE")
+		else if (name == "ENABLE ECHOTRACE" && bEnableGuiWorkflow)
 		{
 			if (ENABLE_Echotrace.get()) {
 				if (SELECT_Fx.get() != 5) {
 					SELECT_Fx = 5;
 				}
+				refreshGuiCollapse_FxChannel();
 			}
-			refreshGuiCollapse_FxChannel();
 		}
 #endif
 
@@ -601,6 +613,23 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 		else if (name == "HEADER")
 		{
 			guiPanel->setShowHeader(bHeader.get());
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void ofxChannelFx::keyPressed(int key) {
+	if (ENABLE_keys) {
+
+		if (key == OF_KEY_UP) {
+			if (SELECT_Fx.get() > 0) SELECT_Fx--;
+		}
+		else if (key == OF_KEY_DOWN) {
+#ifndef INCLUDE_FX_DELAYS
+			if (SELECT_Fx.get() < 3) SELECT_Fx++;
+#else
+			if (SELECT_Fx.get() < 5) SELECT_Fx++;
+#endif
 		}
 	}
 }
@@ -830,10 +859,10 @@ void ofxChannelFx::refreshGuiCollapse_FxChannel() {
 	else if (
 		gFrag1->getMinimized() &&
 		gFrag2->getMinimized() &&
-		gFrag3->getMinimized() 
+		gFrag3->getMinimized()
 #ifdef INCLUDE_FX_DELAYS
 		&& gFrag4->getMinimized() &&
-		gFrag5->getMinimized() &&
+		gFrag5->getMinimized()
 #endif
 		)
 	{

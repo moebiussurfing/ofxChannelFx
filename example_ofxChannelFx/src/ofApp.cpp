@@ -33,22 +33,22 @@ void ofApp::setup() {
 
 	//--
 
-	//material
-	if (bUseMaterial) {
-		//ofEnableLighting();
-		//ofEnableDepthTest();
-		ofSetSmoothLighting(true);
-		light.setup();
-		light.enable();
-		light.setSpotlight();
-		light.setSpotlightCutOff(50);
-		//light.setPosition(0, 100, 100);
+	////material
+	//if (bUseMaterial) {
+	//	//ofEnableLighting();
+	//	//ofEnableDepthTest();
+	//	ofSetSmoothLighting(true);
+	//	light.setup();
+	//	light.enable();
+	//	light.setSpotlight();
+	//	light.setSpotlightCutOff(50);
+	//	//light.setPosition(0, 100, 100);
 
-		material.setDiffuseColor(ofColor::red);
-		material.setAmbientColor(ofColor::red);
-		material.setSpecularColor(ofColor::white);
-		material.setShininess(128);
-	}
+	//	material.setDiffuseColor(ofColor::red);
+	//	material.setAmbientColor(ofColor::red);
+	//	material.setSpecularColor(ofColor::white);
+	//	material.setShininess(128);
+	//}
 
 	//--
 
@@ -60,6 +60,7 @@ void ofApp::setup() {
 	//ofxChannelFx
 	channelFx.setup();
 	channelFx.setGuiPosition(glm::vec2(ofGetWidth() - 230, 10));
+	channelFx.setEnableKeys(true);
 }
 
 //--------------------------------------------------------------
@@ -181,7 +182,7 @@ void ofApp::exitWebcam() {
 //--------------------------------------------------------------
 void ofApp::draw3D() {
 	ofEnableDepthTest();
-	ofEnableAlphaBlending();
+	//ofEnableAlphaBlending();
 
 	ofPushStyle();
 
@@ -194,26 +195,27 @@ void ofApp::draw3D() {
 
 		//-
 
-		if (bUseMaterial) {
-			//ofEnableDepthTest();
+		//if (bUseMaterial) {
+		//	//ofEnableDepthTest();
 
-			ofEnableLighting();
-			//light.setPosition(cam.getPosition().x, cam.getPosition().y, cam.getPosition().z);
-			light.setPosition(-200, 200, 200);
-			light.enable();
+		//	ofEnableLighting();
+		//	//light.setPosition(cam.getPosition().x, cam.getPosition().y, cam.getPosition().z);
+		//	light.setPosition(-200, 200, 200);
+		//	light.enable();
 
-			//material.begin();
-		}
-		else {
-			//ofDisableDepthTest();
-		}
+		//	//material.begin();
+		//}
+		//else {
+		//	//ofDisableDepthTest();
+		//}
 
 		//-
 
 		//prims
 		ofFill();
-		ofSetColor(0);
-		//ofSetColor(0, 64);
+		ofSetColor(0, 64);
+		//ofSetColor(255, 64);
+		//ofSetColor(0);
 		if (_prim == 0) {
 			box.drawFaces();
 		}
@@ -223,21 +225,22 @@ void ofApp::draw3D() {
 
 		//-
 
-		if (bUseMaterial) {
-			//material.end();
+		//if (bUseMaterial) {
+		//	//material.end();
 
-			light.disable();
-			ofDisableLighting();
+		//	light.disable();
+		//	ofDisableLighting();
 
-			//ofDisableDepthTest();
-		}
+		//	//ofDisableDepthTest();
+		//}
 
 		//-
 
 		//wire prims
 		ofNoFill();
-		ofSetColor(255);
-		//ofSetColor(255, 200);
+		ofSetColor(255, 200);
+		//ofSetColor(0, 200);
+		//ofSetColor(255);
 		ofSetLineWidth(2.);
 		if (_prim == 0) {
 			box.drawWireframe();
@@ -250,7 +253,7 @@ void ofApp::draw3D() {
 
 	ofPopStyle();
 
-	ofDisableAlphaBlending();
+	//ofDisableAlphaBlending();
 	ofDisableDepthTest();
 }
 
@@ -269,6 +272,12 @@ void ofApp::exit()
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+
+	//ofxChannelFx
+	channelFx.keyPressed(key);
+
+	//-
+
 	if (key == ' ') {
 		_prim++; if (_prim == 2) _prim = 0;
 	}
@@ -286,19 +295,19 @@ void ofApp::keyPressed(int key) {
 		vidGrabber.setDeviceID(_d);
 		vidGrabber.setup(1920, 1080);
 	}
-	//if (key == 'I') {
-	//	//restart device
-	//	//if (vidGrabber.isInitialized()) {
-	//	//	vidGrabber.close();
-	//	//}
-	//	//else 
-	//	{
-	//		vidGrabber.close();
-	//		vidGrabber.setDeviceID(_d);
-	//		vidGrabber.setup(1920, 1080);
-	//		vidGrabber.initGrabber(1920, 1080);
-	//	}
-	//}
+	if (key == 'I') {
+		//restart device
+		//if (vidGrabber.isInitialized()) {
+		//	vidGrabber.close();
+		//}
+		//else 
+		{
+			vidGrabber.close();
+			vidGrabber.setDeviceID(_d);
+			vidGrabber.setup(1920, 1080);
+			//vidGrabber.initGrabber(1920, 1080);
+		}
+	}
 }
 
 //--------------------------------------------------------------

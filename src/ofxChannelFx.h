@@ -130,9 +130,23 @@ public:
 private:
 	void setup_FxChannel();
 	void update_FxChannel();
+
+	void setup_GuiTheme();
 	void refreshGui_FxChannel();
 	void refreshGuiCollapse_FxChannel();//check if no fx enabled, then collapse all gui panels
-	void setup_GuiTheme();
+
+	//--
+
+	//API
+
+	bool ENABLE_keys = false;
+public:
+	void setEnableKeys(bool b) {
+		ENABLE_keys = b;
+	}
+	void keyPressed(int key);
+
+	//--
 
 	//feed the fx processor
 public:
@@ -150,6 +164,7 @@ private:
 	ofParameter<bool> bHeader{ "HEADER", false };
 	ofParameter<bool> bMinimize{ "MINIMIZE", false };
 	//ofParameter<void> bMinimize{ "MINIMIZE" };
+	bool bEnableGuiWorkflow = false;
 
 	ofParameter<bool> ENABLE_Monochrome;
 	ofParameter<bool> ENABLE_ThreeTones;
@@ -195,7 +210,7 @@ public:
 	void draw();
 	void exit();
 	void windowResized(int w, int h);
-	
+
 	ofParameter<int> window_W, window_H, window_X, window_Y;
 
 	//void drawGui();

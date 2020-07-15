@@ -47,8 +47,8 @@ class ofApp : public ofBaseApp{
 
 		ofTrueTypeFont font;
 
-		//material
-		bool bUseMaterial = false;
-		ofLight light;
-		ofMaterial material;
+		////material
+		//bool bUseMaterial = false;
+		//ofLight light;
+		//ofMaterial material;
 };
