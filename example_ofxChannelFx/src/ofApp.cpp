@@ -141,7 +141,7 @@ void ofApp::drawWebcamInfo() {
 	str += "[" + ofToString(_d) + "] " + _dName.get();
 	str += " " + ofToString(vidGrabber.isInitialized() ? "ON" : "OFF");
 	str += "\ni: select next device";
-	//str += "\nI: restart device";
+	str += "\nI: restart device";
 
 	if (!font.isLoaded()) ofDrawBitmapStringHighlight(str, 30, 20);
 	else {
