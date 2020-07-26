@@ -21,8 +21,8 @@
 
 //----
 //
+#define INCLUDE_FX_DELAYS			//extra fx
 #define INCLUDE_ofxPresetsManager
-//#define INCLUDE_FX_DELAYS	//extra fx
 //
 //----
 
