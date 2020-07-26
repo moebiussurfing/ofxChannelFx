@@ -21,6 +21,7 @@
 
 //----
 //
+#define INCLUDE_ofxPresetsManager
 //#define INCLUDE_FX_DELAYS	//extra fx
 //
 //----
@@ -37,7 +38,6 @@
 //TODO: could add simpler ofxGui maybe..
 
 //optional presets manager
-#define INCLUDE_ofxPresetsManager
 #ifdef INCLUDE_ofxPresetsManager
 #include "ofxPresetsManager.h"
 #endif
@@ -91,11 +91,28 @@ public:
 		float _gwidth = guiPanel->getWidth();
 		return _gwidth;
 	}
+	//--------------------------------------------------------------
+	void setVisibleGui(bool b) {
+		SHOW_Gui = b;
+		guiPanel->getVisible().set(b);
+	}
+	//--------------------------------------------------------------
+	void setPosition_PresetClicker(int x, int y, int _cellSize)
+	{
+		presetsManager.setPosition_PresetClicker(x, y, _cellSize);
+	}
+	//--------------------------------------------------------------
+	void setVisible_PresetClicker(bool b)
+	{
+		presetsManager.setVisible_PresetClicker(b);
+	}
+	//--------------------------------------------------------------
+	void setKeysEnable(bool b) {
+		ENABLE_Keys = b;
+	}
 
 	//bool ENABLE_Active = true;
-	//bool ENABLE_Keys = true;
 	//void setActive(bool b);
-	//void setKeysEnable(bool b);
 	//void setGuiVisible(bool b);
 	//
 	//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
@@ -139,10 +156,10 @@ private:
 
 	//API
 
-	bool ENABLE_keys = false;
+	//bool ENABLE_Keys = false;
 public:
 	void setEnableKeys(bool b) {
-		ENABLE_keys = b;
+		ENABLE_Keys = b;
 	}
 	void keyPressed(int key);
 
@@ -163,6 +180,9 @@ private:
 	ofParameter<bool> RESET{ "RESET", false };			//reset selected fx
 	ofParameter<bool> bHeader{ "HEADER", false };
 	ofParameter<bool> bMinimize{ "MINIMIZE", false };
+	ofParameter<bool> SHOW_Gui{ "SHOW GUI", false };
+	ofParameter<bool> SHOW_Presets{ "SHOW PRESETS", true};
+	ofParameter<bool> ENABLE_Keys{ "ENABLE KEYS", true};
 	//ofParameter<void> bMinimize{ "MINIMIZE" };
 	bool bEnableGuiWorkflow = false;
 

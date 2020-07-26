@@ -5,4 +5,5 @@ ofxDotFrag
 ofxGuiExtended2
 ofxImGui
 ofxPresetsManager
+ofxUndo
 ofxWindowApp

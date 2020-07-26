@@ -140,7 +140,7 @@ void ofxChannelFx::setup_FxChannel()
 
 	//presets params
 
-	params_Preset.setName("FX CHAIN");
+	params_Preset.setName("FX_CHANNEL");
 	ENABLE_FxChain.set("ENABLE", true);
 
 	//fx
@@ -217,6 +217,8 @@ void ofxChannelFx::setup_FxChannel()
 	//main enabler
 	guiGroup->add(ENABLE_FxChain);
 	guiGroup->add(bMinimize);
+	guiGroup->add(SHOW_Presets);
+	guiGroup->add(ENABLE_Keys);
 
 	//-
 
@@ -252,6 +254,8 @@ void ofxChannelFx::setup_FxChannel()
 	//to use callbacks only
 	//bMinimize.set("MINIMIZE");
 	params_Control.add(bMinimize);
+	params_Control.add(SHOW_Presets);
+	params_Control.add(ENABLE_Keys);
 	params_Control.add(bHeader);//should be added to xml settings..
 
 	//bHeader.setSerializable(true);
@@ -309,7 +313,7 @@ void ofxChannelFx::setup_PresetsManager()
 	//-
 
 	//add group params
-	presetsManager.add(params_Preset, { '0', '1', '2', '3', '4', '5', '6', '7', '8' });
+	presetsManager.add(params_Preset, { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
 	presetsManager.setup("ofxChannelFx");//optional name
 }
 #endif
@@ -606,6 +610,20 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 		}
 
+		//show presets
+
+		else if (name == SHOW_Presets.getName())
+		{
+			presetsManager.setVisible_PresetClicker(SHOW_Presets);
+		}
+
+		//enable kkeys
+
+		else if (name == ENABLE_Keys.getName())
+		{
+			presetsManager.setEnableKeys(ENABLE_Keys);
+		}
+
 		//----
 
 		//header
@@ -619,7 +637,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 //--------------------------------------------------------------
 void ofxChannelFx::keyPressed(int key) {
-	if (ENABLE_keys) {
+	if (ENABLE_Keys) {
 
 		if (key == OF_KEY_UP) {
 			if (SELECT_Fx.get() > 0) SELECT_Fx--;
@@ -679,7 +697,7 @@ void ofxChannelFx::update_FxChannel()
 
 		if (bArbPRE) ofEnableArbTex();
 		else ofDisableArbTex();
-	}
+}
 }
 
 //--------------------------------------------------------------
