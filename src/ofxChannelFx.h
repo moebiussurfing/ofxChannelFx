@@ -96,11 +96,9 @@ public:
 		SHOW_Gui = b;
 		guiPanel->getVisible().set(b);
 
-		if(SHOW_Presets && SHOW_Gui)
-			setVisible_PresetClicker(true);
+		if(SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
 		
-		else if(!SHOW_Gui)
-			setVisible_PresetClicker(false);
+		else if(!SHOW_Gui) setVisible_PresetClicker(false);
 	}
 	//--------------------------------------------------------------
 	void setPosition_PresetClicker(int x, int y, int _cellSize)
@@ -121,6 +119,12 @@ public:
 		RESET = true;
 	}
 
+	ofParameterGroup params_ControlExternal;
+	//--------------------------------------------------------------
+	ofParameterGroup getParamGroup_Control() {
+		return params_ControlExternal;
+	}
+	
 	//bool ENABLE_Active = true;
 	//void setActive(bool b);
 	//void setGuiVisible(bool b);

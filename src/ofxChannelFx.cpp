@@ -315,6 +315,13 @@ void ofxChannelFx::setup_PresetsManager()
 	//add group params
 	presetsManager.add(params_Preset, { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
 	presetsManager.setup("ofxChannelFx");//optional name
+
+	//-
+
+	params_ControlExternal.setName("CONTROLS");
+	params_ControlExternal.add(ENABLE_FxChain);
+	params_ControlExternal.add(presetsManager.PRESET_selected);
+	params_ControlExternal.add(presetsManager.PLAY_RandomizeTimer);
 }
 #endif
 
