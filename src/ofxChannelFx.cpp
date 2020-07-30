@@ -540,16 +540,13 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			if (RESET.get()) {
 				RESET = false;
 
-				switch (SELECT_Fx.get())
+				//reset all fx
 				{
-				case 1:
-					frag1.active = true;
+					frag1.active = false;
 					frag1.low = 0;
 					frag1.high = 1;
-					break;
 
-				case 2:
-					frag2.active = true;
+					frag2.active = false;
 					frag2.mix = 1;
 					frag2.thresholds[0] = 0;
 					frag2.thresholds[1] = 0.5f;
@@ -557,32 +554,73 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					frag2.colors[0] = 0;
 					frag2.colors[1] = 128;
 					frag2.colors[2] = 255;
-					break;
 
-				case 3:
+					SELECT_Solo = 3;//select to maximize gui
 					frag3.active = true;
 					frag3.hue = 0;
 					frag3.brightness = 0;
 					frag3.contrast = 1;
 					frag3.saturation = 1;
-					break;
 
 #ifdef INCLUDE_FX_DELAYS
-				case 4:
-					frag4.active = true;
+					frag4.active = false;
 					frag4.feedback = 0;
 					frag4.blendmode = 0;
-					break;
 
-				case 5:
-					frag5.active = true;
+					frag5.active = false;
 					frag5.gain = 0.7f;
 					frag5.threshold = 0.55f;
 					frag5.invert = false;
 					frag5.hardCutoff = false;
-					break;
 #endif
 				}
+
+				//-
+
+				//reset only the selected fx
+//				switch (SELECT_Fx.get())
+//				{
+//				case 1:
+//					frag1.active = true;
+//					frag1.low = 0;
+//					frag1.high = 1;
+//					break;
+//
+//				case 2:
+//					frag2.active = true;
+//					frag2.mix = 1;
+//					frag2.thresholds[0] = 0;
+//					frag2.thresholds[1] = 0.5f;
+//					frag2.fade = 0.3f;
+//					frag2.colors[0] = 0;
+//					frag2.colors[1] = 128;
+//					frag2.colors[2] = 255;
+//					break;
+//
+//				case 3:
+//					frag3.active = true;
+//					frag3.hue = 0;
+//					frag3.brightness = 0;
+//					frag3.contrast = 1;
+//					frag3.saturation = 1;
+//					break;
+//
+//#ifdef INCLUDE_FX_DELAYS
+//				case 4:
+//					frag4.active = true;
+//					frag4.feedback = 0;
+//					frag4.blendmode = 0;
+//					break;
+//
+//				case 5:
+//					frag5.active = true;
+//					frag5.gain = 0.7f;
+//					frag5.threshold = 0.55f;
+//					frag5.invert = false;
+//					frag5.hardCutoff = false;
+//					break;
+//#endif
+//				}
 			}
 		}
 
@@ -648,6 +686,9 @@ void ofxChannelFx::keyPressed(int key) {
 #else
 			if (SELECT_Fx.get() < 5) SELECT_Fx++;
 #endif
+		}
+		else if (key == OF_KEY_BACKSPACE) {
+			doReset();
 		}
 	}
 }

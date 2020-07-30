@@ -95,6 +95,12 @@ public:
 	void setVisibleGui(bool b) {
 		SHOW_Gui = b;
 		guiPanel->getVisible().set(b);
+
+		if(SHOW_Presets && SHOW_Gui)
+			setVisible_PresetClicker(true);
+		
+		else if(!SHOW_Gui)
+			setVisible_PresetClicker(false);
 	}
 	//--------------------------------------------------------------
 	void setPosition_PresetClicker(int x, int y, int _cellSize)
@@ -109,6 +115,10 @@ public:
 	//--------------------------------------------------------------
 	void setKeysEnable(bool b) {
 		ENABLE_Keys = b;
+	}
+	//--------------------------------------------------------------
+	void doReset() {
+		RESET = true;
 	}
 
 	//bool ENABLE_Active = true;
@@ -181,8 +191,8 @@ private:
 	ofParameter<bool> bHeader{ "HEADER", false };
 	ofParameter<bool> bMinimize{ "MINIMIZE", false };
 	ofParameter<bool> SHOW_Gui{ "SHOW GUI", false };
-	ofParameter<bool> SHOW_Presets{ "SHOW PRESETS", true};
-	ofParameter<bool> ENABLE_Keys{ "ENABLE KEYS", true};
+	ofParameter<bool> SHOW_Presets{ "SHOW PRESETS", true };
+	ofParameter<bool> ENABLE_Keys{ "ENABLE KEYS", true };
 	//ofParameter<void> bMinimize{ "MINIMIZE" };
 	bool bEnableGuiWorkflow = false;
 
@@ -256,7 +266,7 @@ private:
 	ofxGuiGroup2 *gFrag1;
 	ofxGuiGroup2 *gFrag2;
 	ofxGuiGroup2 *gFrag3;
-	//extra extra
+	//extra fx
 #ifdef INCLUDE_FX_DELAYS
 	ofxGuiGroup2 *gFrag4;
 	ofxGuiGroup2 *gFrag5;
@@ -276,8 +286,9 @@ private:
 
 	//presetsManager
 #ifdef INCLUDE_ofxPresetsManager
-private:
+public:
 	ofxPresetsManager presetsManager;
+private:
 	void setup_PresetsManager();
 	ofParameterGroup params_PresetsManagerTools{ "> PRESETS" };
 	ofxGuiGroup2* gui_FxPresets;
