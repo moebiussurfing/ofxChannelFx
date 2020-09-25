@@ -14,28 +14,32 @@
 ///	+	when changing preset gui refreshes bad.
 ///	
 
-
 #pragma once
 #include "ofMain.h"
 
-
 //----
 //
-#define INCLUDE_FX_DELAYS			//extra fx
-#define INCLUDE_ofxPresetsManager
+#define INCLUDE_FX_DELAYS				// extra fx: delay and echotrace
+#define INCLUDE_ofxPresetsManager		// presets
+//#define INCLUDE_ofxGui				// simpler gui
+//#define INCLUDE_ofxGuiExtended2		// gui
 //
 //----
 
+#include "ofxSurfingHelpers.h"
 
 //fx shaders
 #include "ofxDotFrag.h"
 
-//gui
-//#define INCLUDE_ofxGuiExtended2
-//#ifdef INCLUDE_ofxGuiExtended2
+//gui1
+#ifdef INCLUDE_ofxGui
+#include "ofxGui.h"
+#endif
+
+//gui2
+#ifdef INCLUDE_ofxGuiExtended2
 #include "ofxGuiExtended2.h"
-//#endif
-//TODO: could add simpler ofxGui maybe..
+#endif
 
 //optional presets manager
 #ifdef INCLUDE_ofxPresetsManager
@@ -46,115 +50,28 @@ class ofxChannelFx
 {
 
 public:
+	// main parameters. usualy to use outside the class as: control & preset
+	ofParameterGroup parameters;
+	ofParameterGroup getParameters() {
+		return parameters;
+	}
+
+	//--
+
+public:
 	ofxChannelFx() {
 		//settings folder
 		path_GLOBAL_Folder = "ofxChannelFx";
 		path_fileName_Session = "ofxChannelFx_Session.xml";
+#ifndef INCLUDE_ofxPresetsManager
 		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
+#endif
 	};
 
 	~ofxChannelFx()
 	{
-		//exit();
+		exit();
 	};
-
-private:
-	ofParameter<glm::vec2> gPos;
-
-	//----
-
-	//API
-
-public:
-
-	//--------------------------------------------------------------
-	void setPath_GlobalFolder(string folder)
-	{
-		ofLogNotice(__FUNCTION__) << folder;
-		path_GLOBAL_Folder = folder;
-		CheckFolder(folder);
-	}
-	//--------------------------------------------------------------
-	glm::vec2 getGuiPosition()
-	{
-		gPos = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
-		return gPos.get();
-	}
-	//--------------------------------------------------------------
-	void setGuiPosition(glm::vec2 pos) {
-		gPos = pos;
-		guiPanel->setPosition(gPos.get().x, gPos.get().y);
-	}
-	//--------------------------------------------------------------
-	float getGuiWidth()
-	{
-		float _gwidth = guiPanel->getWidth();
-		return _gwidth;
-	}
-	//--------------------------------------------------------------
-	void setVisibleGui(bool b) {
-		SHOW_Gui = b;
-		guiPanel->getVisible().set(b);
-
-		if(SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
-		
-		else if(!SHOW_Gui) setVisible_PresetClicker(false);
-	}
-	//--------------------------------------------------------------
-	void setPosition_PresetClicker(int x, int y, int _cellSize)
-	{
-		presetsManager.setPosition_PresetClicker(x, y, _cellSize);
-	}
-	//--------------------------------------------------------------
-	void setVisible_PresetClicker(bool b)
-	{
-		presetsManager.setVisible_PresetClicker(b);
-	}
-	//--------------------------------------------------------------
-	void setKeysEnable(bool b) {
-		ENABLE_Keys = b;
-	}
-	//--------------------------------------------------------------
-	void doReset() {
-		RESET = true;
-	}
-
-	ofParameterGroup params_ControlExternal;
-	//--------------------------------------------------------------
-	ofParameterGroup getParamGroup_Control() {
-		return params_ControlExternal;
-	}
-	
-	//bool ENABLE_Active = true;
-	//void setActive(bool b);
-	//void setGuiVisible(bool b);
-	//
-	//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
-	//	ofEventListener listener_SHOW_gui;
-	//	void Changed_SHOW_gui();
-	//
-	//	ofParameter<int> MODE_App;
-	//	ofEventListener listener_MODE_App;
-	//	void Changed_MODE_App();
-	//
-	//public:
-	//
-	//	void loadPreset(int p)
-	//	{
-	//		//cout << "loadPreset:" << p << endl;
-	//		presetsManager.loadPreset(p);
-	//	}
-	//	void setUserVisible(bool b)
-	//	{
-	//		//presets
-	//		presetsManager.setVisible_PresetClicker(b);
-	//		presetsManager.setEnableKeys(b);
-	//	}
-	//
-	//	void setMODE_App(int m)
-	//	{
-	//		MODE_App = m;
-	//	}
 
 	//--
 
@@ -165,17 +82,6 @@ private:
 	void setup_GuiTheme();
 	void refreshGui_FxChannel();
 	void refreshGuiCollapse_FxChannel();//check if no fx enabled, then collapse all gui panels
-
-	//--
-
-	//API
-
-	//bool ENABLE_Keys = false;
-public:
-	void setEnableKeys(bool b) {
-		ENABLE_Keys = b;
-	}
-	void keyPressed(int key);
 
 	//--
 
@@ -240,25 +146,19 @@ private:
 
 public:
 	void setup();
-	//void update();
 	void draw();
 	void exit();
 	void windowResized(int w, int h);
 
 	ofParameter<int> window_W, window_H, window_X, window_Y;
 
-	//void drawGui();
+	void drawGui();
 
 private:
 	void startup();
 
-	////labels
-	////ofTrueTypeFont myFont;
-	//string myTTF;// gui font for all gui theme
-	//int sizeTTF;
-	//string fname;
-
 	//gui
+#ifdef INCLUDE_ofxGuiExtended2
 private:
 	ofxGui gui;
 	ofxGuiPanel *guiPanel;
@@ -270,6 +170,7 @@ private:
 	ofxGuiGroup2 *gFrag1;
 	ofxGuiGroup2 *gFrag2;
 	ofxGuiGroup2 *gFrag3;
+
 	//extra fx
 #ifdef INCLUDE_FX_DELAYS
 	ofxGuiGroup2 *gFrag4;
@@ -279,12 +180,13 @@ private:
 
 	//customize
 	ofJson j_ButtonBig, j_SliderBig;
+#endif
 
 	//--
 
-	//simpler gui
-	//ofxGui
-	//ofxPanel gui_FxUser;
+#ifdef INCLUDE_ofxGui
+	ofxPanel gui;
+#endif
 
 	//--
 
@@ -295,6 +197,9 @@ public:
 private:
 	void setup_PresetsManager();
 	ofParameterGroup params_PresetsManagerTools{ "> PRESETS" };
+#endif
+
+#ifdef INCLUDE_ofxGuiExtended2
 	ofxGuiGroup2* gui_FxPresets;
 #endif
 
@@ -303,35 +208,140 @@ private:
 	//settings
 private:
 	string path_GLOBAL_Folder;
-	string path_fileName_Preset;
 	string path_fileName_Session;
-
-	void saveGroup(ofParameterGroup &g, string path);
-	void loadGroup(ofParameterGroup &g, string path);
+#ifndef INCLUDE_ofxPresetsManager
+	string path_fileName_Preset;
+#endif
 
 private:
+	ofParameter<glm::vec2> gPos;
+
+	//----
+
+public:
+
 	//--------------------------------------------------------------
-	void CheckFolder(string _path)
+	void setPath_GlobalFolder(string folder)
 	{
-		ofLogNotice(__FUNCTION__) << _path;
-
-		ofDirectory dataDirectory(ofToDataPath(_path, true));
-
-		//check if folder path exist
-		if (!dataDirectory.isDirectory())
-		{
-			ofLogError(__FUNCTION__) << "FOLDER NOT FOUND! TRYING TO CREATE...";
-
-			//try to create folder
-			bool b = dataDirectory.createDirectory(ofToDataPath(_path, true));
-
-			//debug if creation has been succeded
-			if (b) ofLogNotice(__FUNCTION__) << "CREATED '" << _path << "'  SUCCESSFULLY!";
-			else ofLogError(__FUNCTION__) << "UNABLE TO CREATE '" << _path << "' FOLDER!";
-		}
-		else
-		{
-			ofLogNotice(__FUNCTION__) << "OK! LOCATED FOLDER: '" << _path << "'";//nothing to do
-		}
+		ofLogNotice(__FUNCTION__) << folder;
+		path_GLOBAL_Folder = folder;
+		ofxSurfingHelpers::CheckFolder(folder);
 	}
+	//--------------------------------------------------------------
+	glm::vec2 getGuiPosition()
+	{
+#ifdef INCLUDE_ofxGuiExtended2
+		gPos = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
+#endif
+
+#ifdef INCLUDE_ofxGui
+		gPos = glm::vec2(gui.getPosition().x, gui.getPosition().y);
+#endif
+
+		return gPos.get();
+	}
+	//--------------------------------------------------------------
+	void setGuiPosition(glm::vec2 pos) {
+		gPos = pos;
+
+#ifdef INCLUDE_ofxGuiExtended2
+		guiPanel->setPosition(gPos.get().x, gPos.get().y);
+#endif
+
+#ifdef INCLUDE_ofxGui
+		gui.setPosition(gPos.get().x, gPos.get().y);
+#endif
+	}
+	//--------------------------------------------------------------
+	float getGuiWidth()
+	{
+		float _gwidth;
+
+#ifdef INCLUDE_ofxGuiExtended2
+		_gwidth = guiPanel->getWidth();
+#endif
+#ifdef INCLUDE_ofxGui
+		_gwidth = gui.getShape().getWidth();
+#endif
+		return _gwidth;
+	}
+	//--------------------------------------------------------------
+	void setVisibleGui(bool b) {
+		SHOW_Gui = b;
+
+#ifdef INCLUDE_ofxGuiExtended2
+		guiPanel->getVisible().set(b);
+#endif
+
+#ifdef INCLUDE_ofxGui
+#endif
+
+		if (SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
+		else if (!SHOW_Gui) setVisible_PresetClicker(false);
+	}
+	//--------------------------------------------------------------
+	void setPosition_PresetClicker(int x, int y, int _cellSize)
+	{
+		presetsManager.setPosition_PresetClicker(x, y, _cellSize);
+	}
+	//--------------------------------------------------------------
+	void setVisible_PresetClicker(bool b)
+	{
+		presetsManager.setVisible_PresetClicker(b);
+	}
+	//--------------------------------------------------------------
+	void setKeysEnable(bool b) {
+		ENABLE_Keys = b;
+	}
+	//--------------------------------------------------------------
+	void doReset() {
+		RESET = true;
+	}
+
+	ofParameterGroup params_ControlExternal;
+	//--------------------------------------------------------------
+	ofParameterGroup getParamGroup_Control() {
+		return params_ControlExternal;
+	}
+
+	//bool ENABLE_Active = true;
+	//void setActive(bool b);
+	//void setGuiVisible(bool b);
+	//
+	//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
+	//	ofEventListener listener_SHOW_gui;
+	//	void Changed_SHOW_gui();
+	//
+	//	ofParameter<int> MODE_App;
+	//	ofEventListener listener_MODE_App;
+	//	void Changed_MODE_App();
+	//
+	//public:
+	//
+	//	void loadPreset(int p)
+	//	{
+	//		//cout << "loadPreset:" << p << endl;
+	//		presetsManager.loadPreset(p);
+	//	}
+	//	void setUserVisible(bool b)
+	//	{
+	//		//presets
+	//		presetsManager.setVisible_PresetClicker(b);
+	//		presetsManager.setEnableKeys(b);
+	//	}
+	//
+	//	void setMODE_App(int m)
+	//	{
+	//		MODE_App = m;
+	//	}
+
+	//--
+
+	//bool ENABLE_Keys = false;
+public:
+	void setEnableKeys(bool b) {
+		ENABLE_Keys = b;
+	}
+	void keyPressed(int key);
+
 };

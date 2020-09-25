@@ -1,0 +1,27 @@
+{
+    "ofxPresetsManager": {
+        "GUI": {
+            "BG_CLICKER": "0",
+            "EDIT_CLICKER": "0",
+            "ENABLE_KEYS": "1",
+            "GUI_INTERNAL_POSITION": "960, 530.5",
+            "GUI_ImGui_POSITION": "1292, 12",
+            "GUI_ImGui_SIZE": "300, 800",
+            "SHOW_ADVANCED": "0",
+            "SHOW_BROWSER_PANEL": "0",
+            "SHOW_CLICK_PANEL": "1",
+            "SHOW_HELP": "0",
+            "SHOW_ImGui": "1",
+            "SHOW_PARAMETERS": "1",
+            "SHOW_SELECTORS": "0",
+            "THEME_DARK": "0"
+        },
+        "OPTIONS": {
+            "AUTO_LOAD": "1",
+            "AUTO_SAVE": "1",
+            "MODE_EDIT": "1",
+            "MODE_MEMORY": "0",
+            "TIMER_AUTO_SAVE": "0"
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "FX_CHANNEL": {
+        "DELAY": {
+            "BLENDMODE": "0",
+            "DELAY": "1",
+            "ENABLE_DELAY": "0",
+            "FEEDBACK": "0"
+        },
+        "ECHOTRACE": {
+            "ENABLE_ECHOTRACE": "1",
+            "GAIN": "1.223",
+            "HARDCUTOFF": "0",
+            "INVERT": "0",
+            "THRESHOLD": "0.674"
+        },
+        "HSB": {
+            "BRIGHTNESS": "0",
+            "CONTRAST": "1",
+            "ENABLE_HSB": "0",
+            "HUE": "0",
+            "SATURATION": "1"
+        },
+        "MONOCHROME": {
+            "ENABLE_MONOCHROME": "0",
+            "HIGH": "1",
+            "LOW": "0"
+        },
+        "THREE_TONES": {
+            "COLOR_0": "0, 0, 0, 255",
+            "COLOR_1": "0, 255, 0, 255",
+            "COLOR_2": "255, 255, 255, 255",
+            "ENABLE_THREETONES": "0",
+            "MIX": "1",
+            "THRESHOLD_0_1": "0",
+            "THRESHOLD_1_2": "0.4",
+            "THRESHOLD_FADE": "0.1"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "USER-KIT": {
+        "CUSTOM_PATH": {
+            "MODE_CUSTOM_PATH": "0",
+            "Path": "DEFAULT_DATA_PATH"
+        },
+        "GROUP_LINK": "0",
+        "PRESET_SELECTORS": {
+            "FX_CHANNEL": {
+                "FX_CHANNEL": "2",
+                "t_BPM": "120"
+            }
+        }
+    }
+}

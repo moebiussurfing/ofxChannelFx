@@ -1,0 +1,65 @@
+{
+    "Randomizers": {
+        "RANDOM_EDIT": {
+            "PRESET_PARAMETERS": {
+                "BLENDMODE": "1",
+                "BRIGHTNESS": "1",
+                "COLOR_0": "1",
+                "COLOR_1": "1",
+                "COLOR_2": "1",
+                "CONTRAST": "1",
+                "DELAY": "1",
+                "ENABLE_DELAY": "1",
+                "ENABLE_ECHOTRACE": "1",
+                "ENABLE_HSB": "1",
+                "ENABLE_MONOCHROME": "1",
+                "ENABLE_THREETONES": "1",
+                "FEEDBACK": "1",
+                "GAIN": "1",
+                "HARDCUTOFF": "1",
+                "HIGH": "1",
+                "HUE": "1",
+                "INVERT": "1",
+                "LOW": "1",
+                "MIX": "1",
+                "SATURATION": "1",
+                "THRESHOLD": "1",
+                "THRESHOLD_0_1": "1",
+                "THRESHOLD_1_2": "1",
+                "THRESHOLD_FADE": "1"
+            }
+        },
+        "RANDOM_SELECTED": {
+            "MODE_AVOID_REPEAT": "0",
+            "MODE_DURATION_SHORT": {
+                "SHORT_0": "0",
+                "SHORT_1": "0",
+                "SHORT_2": "0",
+                "SHORT_3": "0",
+                "SHORT_4": "0",
+                "SHORT_5": "0",
+                "SHORT_6": "0",
+                "SHORT_7": "0",
+                "SHORT_8": "0",
+                "SHORT_9": "0"
+            },
+            "MODE_LATCH": "0",
+            "MODE_USE_PROBS": "1",
+            "PRESETS_PROBS": {
+                "PROB_0": "5",
+                "PROB_1": "5",
+                "PROB_2": "5",
+                "PROB_3": "5",
+                "PROB_4": "5",
+                "PROB_5": "5",
+                "PROB_6": "5",
+                "PROB_7": "5",
+                "PROB_8": "5",
+                "PROB_9": "5"
+            },
+            "t_BPM": "120",
+            "t_DURATION": "1000",
+            "t_SHORT": "250"
+        }
+    }
+}
