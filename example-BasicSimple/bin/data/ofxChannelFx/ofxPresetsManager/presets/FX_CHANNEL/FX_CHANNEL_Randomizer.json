@@ -29,8 +29,8 @@
                 "THRESHOLD_FADE": "1"
             }
         },
-        "RANDOM_SELECTED": {
-            "MODE_AVOID_REPEAT": "0",
+        "RANDOM_SELECTED_INDEX": {
+            "MODE_AVOID_REPEAT": "1",
             "MODE_DURATION_SHORT": {
                 "SHORT_0": "0",
                 "SHORT_1": "0",
@@ -59,7 +59,7 @@
             },
             "t_BPM": "120",
             "t_DURATION": "1000",
-            "t_SHORT": "250"
+            "t_RATIO": "0.25"
         }
     }
 }

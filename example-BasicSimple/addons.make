@@ -1,4 +1,2 @@
 ofxChannelFx
-ofxImGui
 ofxPresetsManager
-ofxSurfingHelpers

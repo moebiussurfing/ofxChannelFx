@@ -1,9 +1,9 @@
 {
     "__USER": {
         "ENABLE_DELAY": "0",
-        "ENABLE_ECHOTRACE": "0",
+        "ENABLE_ECHOTRACE": "1",
         "ENABLE_HSB": "0",
-        "ENABLE_MONOCHROME": "1",
+        "ENABLE_MONOCHROME": "0",
         "ENABLE_THREETONES": "0",
         "SELECT_FX": "1",
         "SOLO": "1"

@@ -21,7 +21,7 @@
             "SATURATION": "1"
         },
         "MONOCHROME": {
-            "ENABLE_MONOCHROME": "0",
+            "ENABLE_MONOCHROME": "1",
             "HIGH": "1",
             "LOW": "0"
         },
