@@ -7,18 +7,18 @@
             "FEEDBACK": "0"
         },
         "ECHOTRACE": {
-            "ENABLE_ECHOTRACE": "0",
+            "ENABLE_ECHOTRACE": "1",
             "GAIN": "0.7",
             "HARDCUTOFF": "0",
             "INVERT": "0",
             "THRESHOLD": "0.55"
         },
         "HSB": {
-            "BRIGHTNESS": "0",
-            "CONTRAST": "1",
+            "BRIGHTNESS": "0.157",
+            "CONTRAST": "1.926",
             "ENABLE_HSB": "1",
             "HUE": "0",
-            "SATURATION": "1"
+            "SATURATION": "1.835"
         },
         "MONOCHROME": {
             "ENABLE_MONOCHROME": "1",
@@ -27,12 +27,12 @@
         },
         "THREE_TONES": {
             "COLOR_0": "0, 0, 0, 255",
-            "COLOR_1": "0, 255, 0, 255",
+            "COLOR_1": "243, 255, 0, 255",
             "COLOR_2": "255, 255, 255, 255",
-            "ENABLE_THREETONES": "0",
-            "MIX": "1",
-            "THRESHOLD_0_1": "0",
-            "THRESHOLD_1_2": "0.4",
+            "ENABLE_THREETONES": "1",
+            "MIX": "0.818",
+            "THRESHOLD_0_1": "0.14",
+            "THRESHOLD_1_2": "0.616",
             "THRESHOLD_FADE": "0.1"
         }
     }
