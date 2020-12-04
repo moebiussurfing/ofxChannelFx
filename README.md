@@ -2,15 +2,16 @@ ofxChannelFx
 =============================
 
 # Overview
-**ofxChannelFx** is an **openFrameworks** addon to image processing with common effects: HSB, contrast, monochrome, tree tones colors and delays.
+**ofxChannelFx** is an **openFrameworks** addon to image processing with common effects: HSB, contrast, monochrome, tree tones colors, and delays.
 Powered by **ofxDotFrag**.
 
 ## Screenshot
 ![image](/readme_images/Capture1.PNG?raw=true "image")
+![image](/readme_images/Capture2.PNG?raw=true "image")
 
 ## Features
-- Channel strip to do image processing with usualy useful effects.
-- Monochrome, Three Tones, Hue/Saturation/Brightness/Contrast, Delay and Echo Trace effects.
+- Channel Strip to do image processing with usually useful effects.
+- Monochrome, Three Tones, Hue/Saturation/Brightness/Contrast, Delay, and Echo Trace effects.
 - Powered by the shaders of **ofxDotFrag**.
 - Store/Recall settings.
 - Implemented GUI's workflow for **ofxGui** or **ofxGuiExtended** and **ofxPresetsManager**.

@@ -2,14 +2,6 @@
 // Created by moebiussurfing on 2019-12-20.
 //
 
-///	
-///	TODO:
-///	
-///	+	add another paramGroup and move there all settings that must be recalled but not required on gui
-///	+	extra fx: gpu lut?
-///	+	reduce callbacks
-///	
-
 #pragma once
 #include "ofMain.h"
 
@@ -29,6 +21,15 @@
 
 //----
 
+///	
+///	TODO:
+///	
+///	+	add another paramGroup and move there all settings that must be recalled but not required on gui
+///	+	extra fx: gpu lut?
+///	+	reduce callbacks
+///	
+
+//----
 
 //fx shaders
 #include "ofxDotFrag.h"
