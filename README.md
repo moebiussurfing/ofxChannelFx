@@ -37,7 +37,7 @@ ofApp::setup(){
 ofApp::update(){
 	channelFx.begin();
 	{
-		// draw here //
+	// draw here //
 	}
 	channelFx.end();
 }
@@ -49,9 +49,8 @@ ofApp::draw(){
 ```
 
 ## Dependencies
-**Already included into ADDON/libs**  
-- ofxDotFrag (https://github.com/npisanti/ofxDotFrag)  
 
+- ofxDotFrag (https://github.com/npisanti/ofxDotFrag) **Already included into ADDON/libs. No need to add.**    
 - ofxSurfingHelpers (https://github.com/moebiussurfing/ofxSurfingHelpers)  
 
 **Optional**  
