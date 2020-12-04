@@ -5,9 +5,12 @@ ofxChannelFx
 **ofxChannelFx** is an **openFrameworks** addon to image processing with common effects: HSB, contrast, monochrome, tree tones colors, and delays.
 Powered by **ofxDotFrag**.
 
-## Screenshot
-![image](/readme_images/Capture1.PNG?raw=true "image")
+## Screenshots
+Example with **ofxGuiExtended**:  
 ![image](/readme_images/Capture2.PNG?raw=true "image")
+
+Example with **ofxPresetsManager**:  
+![image](/readme_images/Capture1.PNG?raw=true "image")
 
 ## Features
 - Channel Strip to do image processing with usually useful effects.
@@ -34,7 +37,7 @@ ofApp::setup(){
 ofApp::update(){
 	channelFx.begin();
 	{
-		// draw here
+		// draw here //
 	}
 	channelFx.end();
 }
