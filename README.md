@@ -50,7 +50,8 @@ ofApp::draw(){
 
 ## Dependencies
 **Already included into ADDON/libs**  
-- ofxDotFrag (https://github.com/npisanti/ofxDotFrag)
+- ofxDotFrag (https://github.com/npisanti/ofxDotFrag)  
+
 - ofxSurfingHelpers (https://github.com/moebiussurfing/ofxSurfingHelpers)  
 
 **Optional**  
