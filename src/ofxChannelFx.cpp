@@ -82,13 +82,18 @@ void ofxChannelFx::startup()
 
 	DISABLE_Callbacks = false;
 
+	//-
+
 	//load settings
 
-	ofxSurfingHelpers::loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
+	//TODO: crash
+	//ofxSurfingHelpers::loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
 	ofxSurfingHelpers::loadGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
 #endif
+
+	//-
 
 #ifdef INCLUDE_ofxGuiExtended2
 	guiPanel->setShowHeader(bHeader.get());//required bc is not on xml settings
@@ -104,8 +109,12 @@ void ofxChannelFx::startup()
 
 	//refresh
 
-	if (bEnableGuiWorkflow) refreshGui_FxChannel();
-	else {
+	if (bEnableGuiWorkflow)
+	{
+		refreshGui_FxChannel();
+	}
+	else
+	{
 #ifdef INCLUDE_ofxGuiExtended2
 		//minimize all
 		gFrag1->minimize();
@@ -121,7 +130,11 @@ void ofxChannelFx::startup()
 #endif
 	}
 
-	setGuiPosition(glm::vec2(ofGetWidth() - 230, 10));
+#ifdef INCLUDE_ofxGui
+	refreshGui_minimize();
+#endif
+
+	//setGuiPosition(glm::vec2(ofGetWidth() - 230, 10));
 	setEnableKeys(true);
 }
 
@@ -176,7 +189,7 @@ void ofxChannelFx::setup_FxChannel()
 	//gui
 
 	//1. user
-	params_Session.setName("> USER");
+	params_Session.setName("USER CONTROL");
 
 	params_Session.add(SELECT_Fx);
 	params_Session.add(SELECT_Fx_Name);
@@ -227,7 +240,9 @@ void ofxChannelFx::setup_FxChannel()
 	//main enabler
 	guiGroup->add(ENABLE_FxChain);
 	guiGroup->add(bMinimize);
+#ifdef USE_ofxPresetsManager
 	guiGroup->add(SHOW_Presets);
+#endif
 	guiGroup->add(ENABLE_Keys);
 #endif
 
@@ -264,7 +279,7 @@ void ofxChannelFx::setup_FxChannel()
 	gui_FxUser = guiGroup->addGroup(params_Session);
 
 	//2. edit
-	gui_FxEdit = guiGroup->addGroup("> EDIT");
+	gui_FxEdit = guiGroup->addGroup("EDIT");
 #endif
 
 	//-
@@ -275,9 +290,14 @@ void ofxChannelFx::setup_FxChannel()
 	//to use callbacks only
 	//bMinimize.set("MINIMIZE");
 	params_Control.add(bMinimize);
+#ifdef USE_ofxPresetsManager
 	params_Control.add(SHOW_Presets);
+#endif
 	params_Control.add(ENABLE_Keys);
+
+#ifdef INCLUDE_ofxGuiExtended2
 	params_Control.add(bHeader);//should be added to xml settings..
+#endif
 
 	//bHeader.setSerializable(true);
 	bMinimize.setSerializable(false);
@@ -315,13 +335,15 @@ void ofxChannelFx::setup_FxChannel()
 	//-
 
 #ifdef INCLUDE_ofxGui
-	gui.setup("ofxChannelFx");
+	ofxSurfingHelpers::setThemeDark_ofxGui();
+	gui.setup();
 	gui.add(parameters);
+	gui.setPosition(10, 20);
 #endif
 
 	//-
 
-	//customize
+	//customize extended gui
 	setup_GuiTheme();
 
 	//-
@@ -695,28 +717,45 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 					gui_FxEdit->minimize();
 				}
 #endif
+
+#ifdef INCLUDE_ofxGui
+				refreshGui_minimize();
+
+				// minimize
+				auto &g0 = gui.getGroup(params_Control.getName());
+				auto &g1 = g0.getGroup(params_Control.getName());
+				auto &gus = g1.getGroup(params_Session.getName());
+				auto &gfx = g1.getGroup(params_Preset.getName());
+				gus.minimize();
+				gfx.minimize();
+				gui.minimizeAll();
+#endif
 			}
 		}
 
 		//show presets
 
+#ifdef USE_ofxPresetsManager
 		else if (name == SHOW_Presets.getName())
 		{
 			presetsManager.setVisible_PresetClicker(SHOW_Presets);
 		}
+#endif
 
-		//enable kkeys
+		//enable keys
 
 		else if (name == ENABLE_Keys.getName())
 		{
+#ifdef USE_ofxPresetsManager
 			presetsManager.setEnableKeys(ENABLE_Keys);
+#endif
 		}
 
 		//----
 
 		//header
 
-		else if (name == "HEADER")
+		else if (name == bHeader.getName())
 		{
 #ifdef INCLUDE_ofxGuiExtended2
 			guiPanel->setShowHeader(bHeader.get());
@@ -809,7 +848,9 @@ void ofxChannelFx::windowResized(int _w, int _h)
 void ofxChannelFx::drawGui() {
 
 #ifdef INCLUDE_ofxGui
-	if (SHOW_Gui) gui.draw();
+	if (SHOW_Gui.get()) {
+		gui.draw();
+	}
 #endif
 
 }
@@ -835,9 +876,6 @@ void ofxChannelFx::draw()
 //--------------------------------------------------------------
 void ofxChannelFx::setup_GuiTheme()
 {
-#ifdef INCLUDE_ofxGui
-	gui.setPosition(10, 20);
-#endif
 
 #ifdef INCLUDE_ofxGuiExtended2
 
@@ -944,10 +982,6 @@ void ofxChannelFx::setup_GuiTheme()
 void ofxChannelFx::refreshGuiCollapse_FxChannel() {
 	ofLogNotice(__FUNCTION__);
 
-#ifdef INCLUDE_ofxGui
-	//gui.setPosition(10, 20);
-#endif
-
 	//--
 
 #ifdef INCLUDE_ofxGuiExtended2
@@ -991,15 +1025,60 @@ void ofxChannelFx::refreshGuiCollapse_FxChannel() {
 	}
 #endif
 }
+//--------------------------------------------------------------
+void ofxChannelFx::refreshGui_minimize(bool bUseSolo)
+{
+#ifdef INCLUDE_ofxGui
+	auto &g0 = gui.getGroup(params_Control.getName());
+	auto &g1 = g0.getGroup(params_Control.getName());
+	auto &gus = g1.getGroup(params_Session.getName());
+	auto &gfx = g1.getGroup(params_Preset.getName());
+
+	//gus.minimize();
+	//gfx.minimize();
+
+	//frags
+	auto &gd1 = gfx.getGroup(frag1.parameters.getName());
+	auto &gd2 = gfx.getGroup(frag2.parameters.getName());
+	auto &gd3 = gfx.getGroup(frag3.parameters.getName());
+	gd1.minimize();
+	gd2.minimize();
+	gd3.minimize();
+
+#ifdef INCLUDE_FX_DELAYS	
+	auto &gd4 = gfx.getGroup(frag4.parameters.getName());
+	auto &gd5 = gfx.getGroup(frag5.parameters.getName());
+	//auto &gd6 = gfx.getGroup(frag6.parameters.getName());
+	gd4.minimize();
+	gd5.minimize();
+	//gd6.minimize();
+#endif
+
+	if (bUseSolo) {
+		//workflow
+		//expand selected fx panel
+		//if (SELECT_Solo.get())
+		{
+			switch (SELECT_Fx.get())
+			{
+			case 1:	if (ENABLE_Monochrome.get()) gd1.maximize(); break;
+			case 2:	if (ENABLE_ThreeTones.get()) gd2.maximize(); break;
+			case 3:	if (ENABLE_HSB.get()) gd3.maximize(); break;
+#ifdef INCLUDE_FX_DELAYS
+			case 4:	if (ENABLE_Delay.get()) gd4.maximize(); break;
+			case 5:	if (ENABLE_Echotrace.get()) gd5.maximize(); break;
+#endif
+			}
+		}
+	}
+
+#endif
+}
 
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGui_FxChannel()
+void ofxChannelFx::refreshGui_FxChannel()// extended or simple gui
 {
 	ofLogNotice(__FUNCTION__);
-
-#ifdef INCLUDE_ofxGui
-	//gui.setPosition(10, 20);
-#endif
 
 	//--
 
@@ -1034,6 +1113,12 @@ void ofxChannelFx::refreshGui_FxChannel()
 #endif
 		}
 	}
+#endif
+
+	//-
+
+#ifdef INCLUDE_ofxGui
+	refreshGui_minimize(true);
 #endif
 }
 

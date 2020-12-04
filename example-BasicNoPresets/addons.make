@@ -1,0 +1,4 @@
+ofxGui
+ofxChannelFx
+ofxGuiExtended2
+ofxSurfingHelpers

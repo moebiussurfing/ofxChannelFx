@@ -9,24 +9,20 @@
 ///	+	extra fx: gpu lut?
 ///	+	reduce callbacks
 ///	
-///	BUG:
-///	
-///	+	when changing preset gui refreshes bad.
-///	
 
 #pragma once
 #include "ofMain.h"
 
 //----
 //
-#define INCLUDE_FX_DELAYS				// extra fx: delay and echotrace
-#define INCLUDE_ofxPresetsManager		// presets
-//#define INCLUDE_ofxGui				// simpler gui
-//#define INCLUDE_ofxGuiExtended2		// gui
+//#define INCLUDE_ofxPresetsManager	// presets manager
+//
+#define INCLUDE_ofxGui	// simpler gui
+//#define INCLUDE_ofxGuiExtended2	// better gui
+//
+#define INCLUDE_FX_DELAYS	// extra fx: delay and echotrace
 //
 //----
-
-#include "ofxSurfingHelpers.h"
 
 //fx shaders
 #include "ofxDotFrag.h"
@@ -34,6 +30,7 @@
 //gui1
 #ifdef INCLUDE_ofxGui
 #include "ofxGui.h"
+#include "ofxSurfing_ofxGui.h"
 #endif
 
 //gui2
@@ -45,6 +42,10 @@
 #ifdef INCLUDE_ofxPresetsManager
 #include "ofxPresetsManager.h"
 #endif
+
+#include "ofxSurfingHelpers.h"
+
+//-
 
 class ofxChannelFx
 {
@@ -82,6 +83,7 @@ private:
 	void setup_GuiTheme();
 	void refreshGui_FxChannel();
 	void refreshGuiCollapse_FxChannel();//check if no fx enabled, then collapse all gui panels
+	void refreshGui_minimize(bool bUseSolo = false);
 
 	//--
 
@@ -99,10 +101,10 @@ private:
 	ofParameter<bool> SELECT_Solo{ "SOLO", false };		//mute the other fx
 	ofParameter<bool> RESET{ "RESET", false };			//reset selected fx
 	ofParameter<bool> bHeader{ "HEADER", false };
-	ofParameter<bool> bMinimize{ "MINIMIZE", false };
 	ofParameter<bool> SHOW_Gui{ "SHOW GUI", false };
 	ofParameter<bool> SHOW_Presets{ "SHOW PRESETS", true };
 	ofParameter<bool> ENABLE_Keys{ "ENABLE KEYS", true };
+	ofParameter<bool> bMinimize{ "MINIMIZE", false };
 	//ofParameter<void> bMinimize{ "MINIMIZE" };
 	bool bEnableGuiWorkflow = false;
 
@@ -276,9 +278,13 @@ public:
 #ifdef INCLUDE_ofxGui
 #endif
 
+#ifdef USE_ofxPresetsManager
 		if (SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
 		else if (!SHOW_Gui) setVisible_PresetClicker(false);
+#endif
 	}
+
+#ifdef USE_ofxPresetsManager
 	//--------------------------------------------------------------
 	void setPosition_PresetClicker(int x, int y, int _cellSize)
 	{
@@ -289,6 +295,8 @@ public:
 	{
 		presetsManager.setVisible_PresetClicker(b);
 	}
+#endif
+
 	//--------------------------------------------------------------
 	void setKeysEnable(bool b) {
 		ENABLE_Keys = b;
