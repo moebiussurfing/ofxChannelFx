@@ -1,4 +1,3 @@
 ofxChannelFx
 ofxGui
-ofxGuiExtended2
 ofxPresetsManager
