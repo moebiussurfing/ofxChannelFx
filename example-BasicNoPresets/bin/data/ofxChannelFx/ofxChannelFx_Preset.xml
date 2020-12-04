@@ -27,13 +27,13 @@
         },
         "THREE_TONES": {
             "COLOR_0": "0, 0, 0, 255",
-            "COLOR_1": "255, 0, 61, 255",
+            "COLOR_1": "156, 14, 255, 255",
             "COLOR_2": "255, 255, 255, 255",
-            "ENABLE_THREETONES": "0",
+            "ENABLE_THREETONES": "1",
             "MIX": "1",
-            "THRESHOLD_0_1": "0.419971",
-            "THRESHOLD_1_2": "0.631384",
-            "THRESHOLD_FADE": "0.124365"
+            "THRESHOLD_0_1": "0.235663",
+            "THRESHOLD_1_2": "0.680171",
+            "THRESHOLD_FADE": "0.145506"
         }
     }
 }

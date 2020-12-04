@@ -705,17 +705,25 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				bMinimize = false;
 
 #ifdef INCLUDE_ofxGuiExtended2
-				if (gui_FxPresets->getMinimized() && gui_FxUser->getMinimized() && gui_FxEdit->getMinimized())
-				{
-					gui_FxUser->maximize();
-					//return;
-				}
-				else
-				{
-					gui_FxPresets->minimize();
-					gui_FxUser->minimize();
-					gui_FxEdit->minimize();
-				}
+				//TODO: crashes..
+				//if (gui_FxPresets->getMinimized() && gui_FxUser->getMinimized() && gui_FxEdit->getMinimized())
+				//{
+				//	gui_FxUser->maximize();
+				//	//return;
+				//}
+				//else
+				//{
+				//	gui_FxPresets->minimize();
+				//	gui_FxUser->minimize();
+				//	gui_FxEdit->minimize();
+				//}
+
+				gui_FxUser->maximize();
+				gui_FxEdit->minimize();
+
+				// crashes
+				//gui_FxPresets->minimize();
+				//gui_FxPresets->minimizeAll();
 #endif
 
 #ifdef INCLUDE_ofxGui
@@ -979,7 +987,7 @@ void ofxChannelFx::setup_GuiTheme()
 }
 
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGuiCollapse_FxChannel() {
+void ofxChannelFx::refreshGuiCollapse_FxChannel() {// for gui extended only!
 	ofLogNotice(__FUNCTION__);
 
 	//--
@@ -1026,7 +1034,7 @@ void ofxChannelFx::refreshGuiCollapse_FxChannel() {
 #endif
 }
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGui_minimize(bool bUseSolo)
+void ofxChannelFx::refreshGui_minimize(bool bUseSolo)// for ofxGui mode only!
 {
 #ifdef INCLUDE_ofxGui
 	auto &g0 = gui.getGroup(params_Control.getName());

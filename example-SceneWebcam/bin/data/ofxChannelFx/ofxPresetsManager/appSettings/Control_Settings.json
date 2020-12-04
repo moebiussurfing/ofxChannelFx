@@ -11,7 +11,7 @@
             "SHOW_ALL_PARAMETERS": "1",
             "SHOW_CLICKER": "1",
             "SHOW_HELP": "0",
-            "SHOW_ImGui": "1",
+            "SHOW_ImGui": "0",
             "SHOW_PARAMETERS": "0",
             "SHOW_RANDOMIZERS": "0",
             "SHOW_SELECTORS": "0",

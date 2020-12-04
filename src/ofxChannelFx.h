@@ -14,15 +14,21 @@
 #include "ofMain.h"
 
 //----
-//
-//#define INCLUDE_ofxPresetsManager	// presets manager
-//
+
+
+// 1. to enable ofxPresetsManager. (must add the addon to the project)
+//#define INCLUDE_ofxPresetsManager	
+
+// 2. you can choice one of the two implemented gui's:
 #define INCLUDE_ofxGui	// simpler gui
 //#define INCLUDE_ofxGuiExtended2	// better gui
-//
-#define INCLUDE_FX_DELAYS	// extra fx: delay and echotrace
-//
+
+// 3. to include some extra fx's: delay and echotrace
+#define INCLUDE_FX_DELAYS	
+
+
 //----
+
 
 //fx shaders
 #include "ofxDotFrag.h"

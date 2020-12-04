@@ -1,5 +1,5 @@
 {
-    "__USER": {
+    "USER_CONTROL": {
         "ENABLE_DELAY": "1",
         "ENABLE_ECHOTRACE": "1",
         "ENABLE_HSB": "1",
