@@ -9,14 +9,15 @@ Powered by **ofxDotFrag**.
 ![image](/readme_images/Capture1.PNG?raw=true "image")
 
 ## Features
-- Channel strip to do image processing with usualy useful effects:
-* Monochrome, Three Tones, Hue/Saturation/Brightness/Contrast, Delay and Echo Trace effects.
+- Channel strip to do image processing with usualy useful effects.
+- Monochrome, Three Tones, Hue/Saturation/Brightness/Contrast, Delay and Echo Trace effects.
 - Powered by the shaders of **ofxDotFrag**.
 - Store/Recall settings.
-- Implemented **ofxGui** or **ofxGuiExtended** GUI's workflow and **ofxPresetsManager**.
+- Implemented GUI's workflow for **ofxGui** or **ofxGuiExtended** and **ofxPresetsManager**.
 
 ## Usage
- 
+Check examples.  
+
 ### ofApp.h
 ```.cpp
 #include "ofxChannelFx.h"
