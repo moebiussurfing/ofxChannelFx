@@ -46,12 +46,12 @@ ofApp::draw(){
 
 ## Dependencies
 **Already included into ADDON/libs**  
-ofxDotFrag (https://github.com/npisanti/ofxDotFrag)
+-ofxDotFrag (https://github.com/npisanti/ofxDotFrag)
 
 **Optional**  
-ofxGui  
-ofxGuiExtended2 (https://github.com/moebiussurfing/ofxGuiExtended2)  
-ofxPresetsManager (https://github.com/moebiussurfing/ofxPresetsManager)  
+-ofxGui  
+-ofxGuiExtended2 (https://github.com/moebiussurfing/ofxGuiExtended2)  
+-ofxPresetsManager (https://github.com/moebiussurfing/ofxPresetsManager)  
 
 ## Tested systems
 - **Windows10** / **VS2017** / **OF ~0.11**
