@@ -22,7 +22,7 @@ void ofxChannelFx::setup()
 
 		//TODO: check if we can add 3d compatibility..
 		fboSettings.textureTarget = GL_TEXTURE_2D;
-		
+
 		fbo_FxChain.allocate(fboSettings);
 
 		//clear
@@ -115,7 +115,7 @@ void ofxChannelFx::startup()
 
 	if (bEnableGuiWorkflow)
 	{
-		refreshGui_FxChannel();
+		refresh_Gui();
 	}
 	else
 	{
@@ -135,7 +135,7 @@ void ofxChannelFx::startup()
 	}
 
 #ifdef INCLUDE_ofxGui
-	refreshGui_minimize();
+	refresh_ofxGui_minimize();
 #endif
 
 	//setGuiPosition(glm::vec2(ofGetWidth() - 230, 10));
@@ -487,7 +487,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 			//TODO:
 			//if (bEnableGuiWorkflow) 
-			refreshGui_FxChannel();
+			refresh_Gui();
 
 			//--
 		}
@@ -564,7 +564,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				if (SELECT_Fx.get() != 1) {
 					SELECT_Fx = 1;
 				}
-				refreshGuiCollapse_FxChannel();
+				refresh_ofxGuiExtended_Check();
+			}
+			else
+			{
+				refreshi_ofxGuiExtended_Minimize();
 			}
 		}
 		else if (name == "ENABLE THREETONES" && bEnableGuiWorkflow)
@@ -573,7 +577,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				if (SELECT_Fx.get() != 2) {
 					SELECT_Fx = 2;
 				}
-				refreshGuiCollapse_FxChannel();
+				refresh_ofxGuiExtended_Check();
+			}
+			else
+			{
+				refreshi_ofxGuiExtended_Minimize();
 			}
 		}
 		else if (name == "ENABLE HSB" && bEnableGuiWorkflow)
@@ -582,7 +590,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				if (SELECT_Fx.get() != 3) {
 					SELECT_Fx = 3;
 				}
-				refreshGuiCollapse_FxChannel();
+				refresh_ofxGuiExtended_Check();
+			}
+			else
+			{
+				refreshi_ofxGuiExtended_Minimize();
 			}
 		}
 #ifdef INCLUDE_FX_DELAYS
@@ -592,7 +604,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				if (SELECT_Fx.get() != 4) {
 					SELECT_Fx = 4;
 				}
-				refreshGuiCollapse_FxChannel();
+				refresh_ofxGuiExtended_Check();
+			}
+			else
+			{
+				refreshi_ofxGuiExtended_Minimize();
 			}
 		}
 		else if (name == "ENABLE ECHOTRACE" && bEnableGuiWorkflow)
@@ -601,7 +617,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				if (SELECT_Fx.get() != 5) {
 					SELECT_Fx = 5;
 				}
-				refreshGuiCollapse_FxChannel();
+				refresh_ofxGuiExtended_Check();
+			}
+			else
+			{
+				refreshi_ofxGuiExtended_Minimize();
 			}
 		}
 #endif
@@ -732,7 +752,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 #endif
 
 #ifdef INCLUDE_ofxGui
-				refreshGui_minimize();
+				refresh_ofxGui_minimize();
 
 				// minimize
 				auto &g0 = gui.getGroup(params_Control.getName());
@@ -909,7 +929,7 @@ void ofxChannelFx::setup_GuiTheme()
 	{
 		ofLogError(__FUNCTION__) << pathFont << " NOT FOUND!";
 	}
-	if (b) 
+	if (b)
 	{
 		guiPanel->loadTheme("assets/theme/theme_ofxGuiExtended2.json");
 	}
@@ -992,9 +1012,21 @@ void ofxChannelFx::setup_GuiTheme()
 
 #endif
 }
+//--------------------------------------------------------------
+void ofxChannelFx::refreshi_ofxGuiExtended_Minimize() {// for gui extended only!
+#ifdef INCLUDE_ofxGuiExtended2
+	gFrag1->minimize();
+	gFrag2->minimize();
+	gFrag3->minimize();
+#ifdef INCLUDE_FX_DELAYS
+	gFrag4->minimize();
+	gFrag5->minimize();
+#endif
+#endif
+}
 
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGuiCollapse_FxChannel() {// for gui extended only!
+void ofxChannelFx::refresh_ofxGuiExtended_Check() {// for gui extended only!
 	ofLogNotice(__FUNCTION__);
 
 	//--
@@ -1041,7 +1073,7 @@ void ofxChannelFx::refreshGuiCollapse_FxChannel() {// for gui extended only!
 #endif
 }
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGui_minimize(bool bUseSolo)// for ofxGui mode only!
+void ofxChannelFx::refresh_ofxGui_minimize(bool bUseSolo)// for ofxGui mode only!
 {
 #ifdef INCLUDE_ofxGui
 	auto &g0 = gui.getGroup(params_Control.getName());
@@ -1091,8 +1123,10 @@ void ofxChannelFx::refreshGui_minimize(bool bUseSolo)// for ofxGui mode only!
 }
 
 //--------------------------------------------------------------
-void ofxChannelFx::refreshGui_FxChannel()// extended or simple gui
+void ofxChannelFx::refresh_Gui()// extended or simple gui
 {
+	//TODO: maybe there's some refresh method duplicated..
+
 	ofLogNotice(__FUNCTION__);
 
 	//--
@@ -1102,7 +1136,6 @@ void ofxChannelFx::refreshGui_FxChannel()// extended or simple gui
 	//-
 
 	//minimize all
-
 	gFrag1->minimize();
 	gFrag2->minimize();
 	gFrag3->minimize();
@@ -1132,7 +1165,7 @@ void ofxChannelFx::refreshGui_FxChannel()// extended or simple gui
 	//-
 
 #ifdef INCLUDE_ofxGui
-	refreshGui_minimize(true);
+	refresh_ofxGui_minimize(true);
 #endif
 }
 
