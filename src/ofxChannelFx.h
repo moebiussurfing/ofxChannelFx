@@ -12,8 +12,8 @@
 //#define INCLUDE_ofxPresetsManager	
 
 // 2. you can choice one of the two implemented gui's:
-#define INCLUDE_ofxGui	// simpler gui
-//#define INCLUDE_ofxGuiExtended2	// better gui
+//#define INCLUDE_ofxGui	// simpler gui
+#define INCLUDE_ofxGuiExtended2	// better gui
 
 // 3. to include some extra fx's: delay and echotrace
 #define INCLUDE_FX_DELAYS	
@@ -70,7 +70,9 @@ public:
 	ofxChannelFx() {
 		//settings folder
 		path_GLOBAL_Folder = "ofxChannelFx";
-		path_fileName_Session = "ofxChannelFx_Session.xml";
+		
+		//TODO: not required
+		//path_fileName_Session = "ofxChannelFx_Session.xml";
 #ifndef INCLUDE_ofxPresetsManager
 		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
 #endif
@@ -104,7 +106,7 @@ public:
 private:
 	//ofParameter<bool> SHOW_DOT_FX;
 	ofParameter<int> SELECT_Fx{ "SELECT FX", 0, 0, 3 };	//select the fx to edit/show gui panel
-	ofParameter<string> SELECT_Fx_Name{ "FX","" };		//fx name
+	ofParameter<std::string> SELECT_Fx_Name{ "FX","" };		//fx name
 	ofParameter<bool> SELECT_Solo{ "SOLO", false };		//mute the other fx
 	ofParameter<bool> RESET{ "RESET", false };			//reset selected fx
 	ofParameter<bool> bHeader{ "HEADER", false };
@@ -216,10 +218,11 @@ private:
 
 	//settings
 private:
-	string path_GLOBAL_Folder;
-	string path_fileName_Session;
+	std::string path_GLOBAL_Folder;
+	//std::string path_fileName_Session;
+
 #ifndef INCLUDE_ofxPresetsManager
-	string path_fileName_Preset;
+	std::string path_fileName_Preset;
 #endif
 
 private:
@@ -230,7 +233,7 @@ private:
 public:
 
 	//--------------------------------------------------------------
-	void setPath_GlobalFolder(string folder)
+	void setPath_GlobalFolder(std::string folder)
 	{
 		ofLogNotice(__FUNCTION__) << folder;
 		path_GLOBAL_Folder = folder;

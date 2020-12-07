@@ -19,8 +19,10 @@ void ofxChannelFx::setup()
 		fboSettings.width = window_W;
 		fboSettings.height = window_H;
 		fboSettings.internalformat = GL_RGBA;
-		fboSettings.textureTarget = GL_TEXTURE_2D;
+
 		//TODO: check if we can add 3d compatibility..
+		fboSettings.textureTarget = GL_TEXTURE_2D;
+		
 		fbo_FxChain.allocate(fboSettings);
 
 		//clear
@@ -86,7 +88,7 @@ void ofxChannelFx::startup()
 
 	//load settings
 
-	//TODO: crash
+	//TODO: not required
 	//ofxSurfingHelpers::loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
@@ -108,6 +110,8 @@ void ofxChannelFx::startup()
 	//-
 
 	//refresh
+
+	bEnableGuiWorkflow = true;
 
 	if (bEnableGuiWorkflow)
 	{
@@ -391,8 +395,8 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 {
 	if (!DISABLE_Callbacks)
 	{
-		string name = e.getName();
-		if (name != "" && name != "exclude")
+		std::string name = e.getName();
+		//if (name != "" && name != "exclude")
 		{
 			ofLogNotice(__FUNCTION__) << name << " : " << e;
 		}
@@ -472,7 +476,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 			//workflow
 #ifdef INCLUDE_ofxGuiExtended2
-//maximize edit if minimized
+			//maximize edit if minimized
 			if (gui_FxEdit->getMinimized())
 			{
 				gui_FxEdit->maximize();
@@ -494,7 +498,8 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		else if (name == "SOLO")
 		{
-			if (SELECT_Solo.get()) {
+			if (SELECT_Solo.get())
+			{
 				frag1.active = false;
 				frag2.active = false;
 				frag3.active = false;
@@ -891,10 +896,11 @@ void ofxChannelFx::setup_GuiTheme()
 
 	//gui theme
 	//must check before if the used font file is present
-	string str = "overpass-mono-bold.otf";
-	string pathFont = "assets/fonts/" + str;// /data/assets
+	std::string str = "telegrama_render.otf";
+	//std::string str = "overpass-mono-bold.otf";
+	std::string pathFont = "assets/fonts/" + str;// /data/assets
 	ofFile file(pathFont);
-	bool b = file.exists();
+	bool b = file.exists();// must check if the linked font into json is located there! to avoid exception crash..
 	if (b)
 	{
 		ofLogNotice(__FUNCTION__) << pathFont << " FOUND";
@@ -903,7 +909,8 @@ void ofxChannelFx::setup_GuiTheme()
 	{
 		ofLogError(__FUNCTION__) << pathFont << " NOT FOUND!";
 	}
-	if (b) {
+	if (b) 
+	{
 		guiPanel->loadTheme("assets/theme/theme_ofxGuiExtended2.json");
 	}
 
@@ -1099,7 +1106,6 @@ void ofxChannelFx::refreshGui_FxChannel()// extended or simple gui
 	gFrag1->minimize();
 	gFrag2->minimize();
 	gFrag3->minimize();
-
 #ifdef INCLUDE_FX_DELAYS
 	gFrag4->minimize();
 	gFrag5->minimize();
@@ -1142,7 +1148,8 @@ void ofxChannelFx::exit()
 
 	//settings 
 
-	ofxSurfingHelpers::saveGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
+	//TODO: not required
+	//ofxSurfingHelpers::saveGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
 	ofxSurfingHelpers::saveGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
