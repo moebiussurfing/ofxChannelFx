@@ -90,9 +90,10 @@ private:
 	void update_FxChannel();
 
 	void setup_GuiTheme();
-	void refreshGui_FxChannel();
-	void refreshGuiCollapse_FxChannel();//check if no fx enabled, then collapse all gui panels
-	void refreshGui_minimize(bool bUseSolo = false);
+	void refresh_Gui();
+	void refresh_ofxGuiExtended_Check();//check if no fx enabled, then collapse all gui panels
+	void refresh_ofxGui_minimize(bool bUseSolo = false);
+	void refreshi_ofxGuiExtended_Minimize();
 
 	//--
 
@@ -114,7 +115,6 @@ private:
 	ofParameter<bool> SHOW_Presets{ "SHOW PRESETS", true };
 	ofParameter<bool> ENABLE_Keys{ "ENABLE KEYS", true };
 	ofParameter<bool> bMinimize{ "MINIMIZE", false };
-	//ofParameter<void> bMinimize{ "MINIMIZE" };
 	bool bEnableGuiWorkflow = false;
 
 	ofParameter<bool> ENABLE_Monochrome;
@@ -166,6 +166,9 @@ public:
 	void drawGui();
 
 private:
+	
+	void fboAllocate();
+
 	void startup();
 
 	//gui
