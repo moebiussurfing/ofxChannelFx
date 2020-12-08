@@ -1,12 +1,8 @@
 #include "ofxChannelFx.h"
 
 //--------------------------------------------------------------
-void ofxChannelFx::setup()
+void ofxChannelFx::fboAllocate()
 {
-	DISABLE_Callbacks = true;
-
-	//-
-
 	window_W = ofGetWidth();
 	window_H = ofGetHeight();
 
@@ -46,6 +42,14 @@ void ofxChannelFx::setup()
 	}
 	if (bArbPRE) ofEnableArbTex();
 	else ofDisableArbTex();
+}
+
+//--------------------------------------------------------------
+void ofxChannelFx::setup()
+{
+	DISABLE_Callbacks = true;
+	
+	fboAllocate();
 
 	//-
 
@@ -875,6 +879,7 @@ void ofxChannelFx::windowResized(int _w, int _h)
 
 	//TODO:
 	//resize fbo...
+	fboAllocate();
 }
 
 //--------------------------------------------------------------

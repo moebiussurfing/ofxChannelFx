@@ -166,6 +166,9 @@ public:
 	void drawGui();
 
 private:
+	
+	void fboAllocate();
+
 	void startup();
 
 	//gui
