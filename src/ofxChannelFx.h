@@ -291,13 +291,13 @@ public:
 #ifdef INCLUDE_ofxGui
 #endif
 
-#ifdef USE_ofxPresetsManager
+#ifdef INCLUDE_ofxPresetsManager
 		if (SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
 		else if (!SHOW_Gui) setVisible_PresetClicker(false);
 #endif
 	}
 
-#ifdef USE_ofxPresetsManager
+#ifdef INCLUDE_ofxPresetsManager
 	//--------------------------------------------------------------
 	void setPosition_PresetClicker(int x, int y, int _cellSize)
 	{

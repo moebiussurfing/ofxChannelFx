@@ -784,7 +784,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 		else if (name == ENABLE_Keys.getName())
 		{
 #ifdef USE_ofxPresetsManager
-			presetsManager.setEnableKeys(ENABLE_Keys);
+			presetsManager.setEnableKeys(ENABLE_Keys_Player);
 #endif
 		}
 
@@ -877,8 +877,7 @@ void ofxChannelFx::windowResized(int _w, int _h)
 	window_W = _w;
 	window_H = _h;
 
-	//TODO:
-	//resize fbo...
+	//resize fbo
 	fboAllocate();
 }
 
@@ -922,19 +921,18 @@ void ofxChannelFx::setup_GuiTheme()
 	//gui theme
 	//must check before if the used font file is present
 	std::string str = "telegrama_render.otf";
-	//std::string str = "overpass-mono-bold.otf";
-	std::string pathFont = "assets/fonts/" + str;// /data/assets
-	ofFile file(pathFont);
+	std::string _path = "assets/fonts/" + str;// /data/assets
+	ofFile file(_path);
 	bool b = file.exists();// must check if the linked font into json is located there! to avoid exception crash..
 	if (b)
 	{
-		ofLogNotice(__FUNCTION__) << pathFont << " FOUND";
+		ofLogNotice(__FUNCTION__) << _path << " FOUND";
 	}
 	else
 	{
-		ofLogError(__FUNCTION__) << pathFont << " NOT FOUND!";
+		ofLogError(__FUNCTION__) << _path << " NOT FOUND!";
 	}
-	if (b)
+	if (b)//located font so we can avoid exception if not...
 	{
 		guiPanel->loadTheme("assets/theme/theme_ofxGuiExtended2.json");
 	}
