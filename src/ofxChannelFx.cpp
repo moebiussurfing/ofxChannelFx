@@ -172,7 +172,6 @@ void ofxChannelFx::setup_FxChannel()
 	//presets params
 
 	params_Preset.setName("FX_CHANNEL");
-	ENABLE_FxChain.set("ENABLE", true);
 
 	//fx
 	//params_Preset.add(ENABLE_FxChain);

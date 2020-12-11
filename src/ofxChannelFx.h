@@ -76,6 +76,8 @@ public:
 #ifndef INCLUDE_ofxPresetsManager
 		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
 #endif
+
+		ENABLE_FxChain.set("ENABLE", true);
 	};
 
 	~ofxChannelFx()
