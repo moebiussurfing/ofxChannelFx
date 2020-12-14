@@ -180,6 +180,14 @@ private:
 
 	void startup();
 
+public:
+	//--------------------------------------------------------------
+	void loadSettings() {
+#ifndef INCLUDE_ofxPresetsManager
+		ofxSurfingHelpers::loadGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
+#endif
+	}
+
 	//gui
 #ifdef INCLUDE_ofxGuiExtended2
 private:

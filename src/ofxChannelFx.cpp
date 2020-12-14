@@ -826,8 +826,9 @@ void ofxChannelFx::keyPressed(int key) {
 void ofxChannelFx::begin() {
 	//if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
+		//TODO:
+		//bArbPRE = ofGetUsingArbTex();
+		//ofDisableArbTex();
 
 		fbo_FxChain.begin();
 		ofClear(0, 0, 0, 0);
@@ -840,8 +841,9 @@ void ofxChannelFx::end() {
 	{
 		fbo_FxChain.end();
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		//TODO:
+		//if (bArbPRE) ofEnableArbTex();
+		//else ofDisableArbTex();
 	}
 }
 
@@ -850,8 +852,8 @@ void ofxChannelFx::update_FxChannel()
 {
 	if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
+		//bArbPRE = ofGetUsingArbTex();
+		//ofDisableArbTex();
 
 		//fx
 		frag1.apply(fbo_FxChain);
@@ -865,8 +867,8 @@ void ofxChannelFx::update_FxChannel()
 		//frag6.apply(fbo_FxChain);
 #endif
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		//if (bArbPRE) ofEnableArbTex();
+		//else ofDisableArbTex();
 	}
 }
 
@@ -896,16 +898,16 @@ void ofxChannelFx::draw()
 {
 	//if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
+		//bArbPRE = ofGetUsingArbTex();
+		//ofDisableArbTex();
 
 		update_FxChannel();
 
 		ofSetColor(255, 255, 255, 255);
 		fbo_FxChain.draw(0, 0, window_W, window_H);
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		//if (bArbPRE) ofEnableArbTex();
+		//else ofDisableArbTex();
 	}
 }
 
