@@ -78,6 +78,8 @@ public:
 #endif
 
 		ENABLE_FxChain.set("ENABLE", true);
+
+		vflip = false;
 	};
 
 	~ofxChannelFx()
@@ -147,8 +149,13 @@ private:
 
 private:
 	ofFbo fbo_FxChain;
-
-	bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
+	bool vflip;
+public:
+	void setVflip(bool b) {
+		vflip = b;
+	}
+private:
+	//bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
 
 	//basic fx
 	ofx::dotfrag::Monochrome frag1;

@@ -8,7 +8,7 @@ void ofxChannelFx::fboAllocate()
 
 	//-
 
-	bArbPRE = ofGetUsingArbTex();
+	bool bArbPRE = ofGetUsingArbTex();
 	ofDisableArbTex();
 	{
 		ofFbo::Settings fboSettings;
@@ -898,16 +898,16 @@ void ofxChannelFx::draw()
 {
 	//if (ENABLE_FxChain)
 	{
-		//bArbPRE = ofGetUsingArbTex();
-		//ofDisableArbTex();
-
 		update_FxChannel();
 
 		ofSetColor(255, 255, 255, 255);
-		fbo_FxChain.draw(0, 0, window_W, window_H);
 
-		//if (bArbPRE) ofEnableArbTex();
-		//else ofDisableArbTex();
+		if (!vflip) {
+			fbo_FxChain.draw(0, 0, window_W, window_H);
+		}
+		else {
+			fbo_FxChain.draw(0, window_H, window_W, -window_H);
+		}
 	}
 }
 
