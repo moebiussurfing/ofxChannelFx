@@ -241,8 +241,10 @@ void ofxChannelFx::setup_FxChannel()
 	//ofxGuiExtended
 	//populate widgets
 #ifdef INCLUDE_ofxGuiExtended2
-	guiPanel = gui.addPanel("ofxChannelFx");
-	guiGroup = guiPanel->addGroup("ofxChannelFx");
+	guiPanel = gui.addPanel("CHANNEL FX");
+	guiGroup = guiPanel->addGroup("CHANNEL FX", ofJson{ {"show-header", false} });//avoid double header
+	//guiPanel = gui.addPanel("ofxChannelFx");
+	//guiGroup = guiPanel->addGroup("ofxChannelFx");
 
 	//main enabler
 	guiGroup->add(ENABLE_FxChain);
