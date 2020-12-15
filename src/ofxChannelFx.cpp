@@ -8,7 +8,7 @@ void ofxChannelFx::fboAllocate()
 
 	//-
 
-	bArbPRE = ofGetUsingArbTex();
+	bool bArbPRE = ofGetUsingArbTex();
 	ofDisableArbTex();
 	{
 		ofFbo::Settings fboSettings;
@@ -172,7 +172,6 @@ void ofxChannelFx::setup_FxChannel()
 	//presets params
 
 	params_Preset.setName("FX_CHANNEL");
-	ENABLE_FxChain.set("ENABLE", true);
 
 	//fx
 	//params_Preset.add(ENABLE_FxChain);
@@ -242,8 +241,10 @@ void ofxChannelFx::setup_FxChannel()
 	//ofxGuiExtended
 	//populate widgets
 #ifdef INCLUDE_ofxGuiExtended2
-	guiPanel = gui.addPanel("ofxChannelFx");
-	guiGroup = guiPanel->addGroup("ofxChannelFx");
+	guiPanel = gui.addPanel("CHANNEL FX");
+	guiGroup = guiPanel->addGroup("CHANNEL FX", ofJson{ {"show-header", false} });//avoid double header
+	//guiPanel = gui.addPanel("ofxChannelFx");
+	//guiGroup = guiPanel->addGroup("ofxChannelFx");
 
 	//main enabler
 	guiGroup->add(ENABLE_FxChain);
@@ -784,7 +785,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 		else if (name == ENABLE_Keys.getName())
 		{
 #ifdef USE_ofxPresetsManager
-			presetsManager.setEnableKeys(ENABLE_Keys);
+			presetsManager.setEnableKeys(ENABLE_Keys_Player);
 #endif
 		}
 
@@ -827,8 +828,9 @@ void ofxChannelFx::keyPressed(int key) {
 void ofxChannelFx::begin() {
 	//if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
+		//TODO:
+		//bArbPRE = ofGetUsingArbTex();
+		//ofDisableArbTex();
 
 		fbo_FxChain.begin();
 		ofClear(0, 0, 0, 0);
@@ -841,8 +843,9 @@ void ofxChannelFx::end() {
 	{
 		fbo_FxChain.end();
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		//TODO:
+		//if (bArbPRE) ofEnableArbTex();
+		//else ofDisableArbTex();
 	}
 }
 
@@ -851,8 +854,8 @@ void ofxChannelFx::update_FxChannel()
 {
 	if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
+		//bArbPRE = ofGetUsingArbTex();
+		//ofDisableArbTex();
 
 		//fx
 		frag1.apply(fbo_FxChain);
@@ -866,8 +869,8 @@ void ofxChannelFx::update_FxChannel()
 		//frag6.apply(fbo_FxChain);
 #endif
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		//if (bArbPRE) ofEnableArbTex();
+		//else ofDisableArbTex();
 	}
 }
 
@@ -877,8 +880,7 @@ void ofxChannelFx::windowResized(int _w, int _h)
 	window_W = _w;
 	window_H = _h;
 
-	//TODO:
-	//resize fbo...
+	//resize fbo
 	fboAllocate();
 }
 
@@ -898,16 +900,16 @@ void ofxChannelFx::draw()
 {
 	//if (ENABLE_FxChain)
 	{
-		bArbPRE = ofGetUsingArbTex();
-		ofDisableArbTex();
-
 		update_FxChannel();
 
 		ofSetColor(255, 255, 255, 255);
-		fbo_FxChain.draw(0, 0, window_W, window_H);
 
-		if (bArbPRE) ofEnableArbTex();
-		else ofDisableArbTex();
+		if (!vflip) {
+			fbo_FxChain.draw(0, 0, window_W, window_H);
+		}
+		else {
+			fbo_FxChain.draw(0, window_H, window_W, -window_H);
+		}
 	}
 }
 
@@ -922,19 +924,18 @@ void ofxChannelFx::setup_GuiTheme()
 	//gui theme
 	//must check before if the used font file is present
 	std::string str = "telegrama_render.otf";
-	//std::string str = "overpass-mono-bold.otf";
-	std::string pathFont = "assets/fonts/" + str;// /data/assets
-	ofFile file(pathFont);
+	std::string _path = "assets/fonts/" + str;// /data/assets
+	ofFile file(_path);
 	bool b = file.exists();// must check if the linked font into json is located there! to avoid exception crash..
 	if (b)
 	{
-		ofLogNotice(__FUNCTION__) << pathFont << " FOUND";
+		ofLogNotice(__FUNCTION__) << _path << " FOUND";
 	}
 	else
 	{
-		ofLogError(__FUNCTION__) << pathFont << " NOT FOUND!";
+		ofLogError(__FUNCTION__) << _path << " NOT FOUND!";
 	}
-	if (b)
+	if (b)//located font so we can avoid exception if not...
 	{
 		guiPanel->loadTheme("assets/theme/theme_ofxGuiExtended2.json");
 	}

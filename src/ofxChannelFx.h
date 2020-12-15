@@ -70,12 +70,16 @@ public:
 	ofxChannelFx() {
 		//settings folder
 		path_GLOBAL_Folder = "ofxChannelFx";
-		
+
 		//TODO: not required
 		//path_fileName_Session = "ofxChannelFx_Session.xml";
 #ifndef INCLUDE_ofxPresetsManager
 		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
 #endif
+
+		ENABLE_FxChain.set("ENABLE", true);
+
+		vflip = false;
 	};
 
 	~ofxChannelFx()
@@ -94,6 +98,13 @@ private:
 	void refresh_ofxGuiExtended_Check();//check if no fx enabled, then collapse all gui panels
 	void refresh_ofxGui_minimize(bool bUseSolo = false);
 	void refreshi_ofxGuiExtended_Minimize();
+
+public:
+	//--------------------------------------------------------------
+	void loadTheme(const string &filename) {
+		guiPanel->loadTheme(filename);
+	}
+
 
 	//--
 
@@ -138,8 +149,13 @@ private:
 
 private:
 	ofFbo fbo_FxChain;
-
-	bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
+	bool vflip;
+public:
+	void setVflip(bool b) {
+		vflip = b;
+	}
+private:
+	//bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
 
 	//basic fx
 	ofx::dotfrag::Monochrome frag1;
@@ -166,10 +182,18 @@ public:
 	void drawGui();
 
 private:
-	
+
 	void fboAllocate();
 
 	void startup();
+
+public:
+	//--------------------------------------------------------------
+	void loadSettings() {
+#ifndef INCLUDE_ofxPresetsManager
+		ofxSurfingHelpers::loadGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
+#endif
+	}
 
 	//gui
 #ifdef INCLUDE_ofxGuiExtended2
@@ -256,6 +280,10 @@ public:
 		return gPos.get();
 	}
 	//--------------------------------------------------------------
+	void setGuiPosition(int x, int y) {
+		setGuiPosition (glm::vec2(x, y));
+	}
+	//--------------------------------------------------------------
 	void setGuiPosition(glm::vec2 pos) {
 		gPos = pos;
 
@@ -291,13 +319,13 @@ public:
 #ifdef INCLUDE_ofxGui
 #endif
 
-#ifdef USE_ofxPresetsManager
+#ifdef INCLUDE_ofxPresetsManager
 		if (SHOW_Presets && SHOW_Gui) setVisible_PresetClicker(true);
 		else if (!SHOW_Gui) setVisible_PresetClicker(false);
 #endif
 	}
 
-#ifdef USE_ofxPresetsManager
+#ifdef INCLUDE_ofxPresetsManager
 	//--------------------------------------------------------------
 	void setPosition_PresetClicker(int x, int y, int _cellSize)
 	{
