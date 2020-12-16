@@ -925,13 +925,13 @@ void ofxChannelFx::setup_GuiTheme()
 	auto g2 = gFrag2->getGroup(frag2.parameters.getName())->getGroup("COLOR 2");
 
 	g0 = gFrag2->getGroup("COLOR 0");
-	auto a0 = g0->getControl("a");
-	a0->setHidden(true);
 	g1 = gFrag2->getGroup("COLOR 1");
-	auto a1 = g1->getControl("a");
-	a1->setHidden(true);
 	g2 = gFrag2->getGroup("COLOR 2");
+	auto a0 = g0->getControl("a");
+	auto a1 = g1->getControl("a");
 	auto a2 = g2->getControl("a");
+	a0->setHidden(true);
+	a1->setHidden(true);
 	a2->setHidden(true);
 
 	//a0->mini
