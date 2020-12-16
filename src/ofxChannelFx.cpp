@@ -920,9 +920,9 @@ void ofxChannelFx::setup_GuiTheme()
 	//-
 
 	//remove alpha slider from colors
-	auto g0 = gFrag2->getGroup("COLOR 0");
-	auto g1 = gFrag2->getGroup("COLOR 1");
-	auto g2 = gFrag2->getGroup("COLOR 2");
+	auto g0 = gFrag2->getGroup(frag2.parameters.getName())->getGroup("COLOR 0");
+	auto g1 = gFrag2->getGroup(frag2.parameters.getName())->getGroup("COLOR 1");
+	auto g2 = gFrag2->getGroup(frag2.parameters.getName())->getGroup("COLOR 2");
 
 	g0 = gFrag2->getGroup("COLOR 0");
 	auto a0 = g0->getControl("a");
@@ -933,6 +933,10 @@ void ofxChannelFx::setup_GuiTheme()
 	g2 = gFrag2->getGroup("COLOR 2");
 	auto a2 = g2->getControl("a");
 	a2->setHidden(true);
+
+	//a0->mini
+	//g0->set();
+	//g0->minimize();
 
 	//-
 
