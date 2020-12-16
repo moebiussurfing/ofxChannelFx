@@ -38,7 +38,6 @@ void ofxChannelFx::fboAllocate()
 		frag5.allocate(fbo_FxChain);
 		//frag6.allocate(fbo_FxChain);
 #endif
-
 	}
 	if (bArbPRE) ofEnableArbTex();
 	else ofDisableArbTex();
@@ -48,7 +47,7 @@ void ofxChannelFx::fboAllocate()
 void ofxChannelFx::setup()
 {
 	DISABLE_Callbacks = true;
-	
+
 	fboAllocate();
 
 	//-
@@ -92,8 +91,7 @@ void ofxChannelFx::startup()
 
 	//load settings
 
-	//TODO: not required
-	//ofxSurfingHelpers::loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
+	ofxSurfingHelpers::loadGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 
 #ifndef INCLUDE_ofxPresetsManager
 	ofxSurfingHelpers::loadGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
@@ -102,6 +100,7 @@ void ofxChannelFx::startup()
 	//-
 
 #ifdef INCLUDE_ofxGuiExtended2
+	guiPanel->setPosition(position_Gui.get().x, position_Gui.get().y);
 	guiPanel->setShowHeader(bHeader.get());//required bc is not on xml settings
 #endif
 
@@ -167,6 +166,24 @@ void ofxChannelFx::setup_FxChannel()
 {
 	//parameters
 
+	//customize names to tweak gui labels
+	frag1.parameters.setName("1 " + frag1.parameters.getName());
+	frag2.parameters.setName("2 " + frag2.parameters.getName());
+	frag3.parameters.setName("3 " + frag3.parameters.getName());
+#ifdef INCLUDE_FX_DELAYS
+	frag4.parameters.setName("4 " + frag4.parameters.getName());
+	frag5.parameters.setName("5 " + frag5.parameters.getName());
+#endif
+
+	//-
+
+	//gui layout
+	position_Gui.set("GUI POSITION",
+		glm::vec2(window_W * 0.5, window_H * 0.5),
+		glm::vec2(0, 0),
+		glm::vec2(window_W, window_H)
+	);
+
 	//--
 
 	//presets params
@@ -193,15 +210,20 @@ void ofxChannelFx::setup_FxChannel()
 
 	//--
 
+	params_Session.setName("AppSession");
+	params_Session.add(SELECT_Fx);
+	params_Session.add(SELECT_Solo);
+	params_Session.add(position_Gui);
+
 	//gui
 
 	//1. user
-	params_Session.setName("USER CONTROL");
 
-	params_Session.add(SELECT_Fx);
-	params_Session.add(SELECT_Fx_Name);
-	params_Session.add(SELECT_Solo);
-	params_Session.add(RESET);
+	params_Subcontrol.setName("CONTROL");
+	params_Subcontrol.add(SELECT_Fx);
+	params_Subcontrol.add(SELECT_Fx_Name);
+	params_Subcontrol.add(SELECT_Solo);
+	params_Subcontrol.add(RESET);
 
 	//2. edit
 	//linked enablers
@@ -212,28 +234,28 @@ void ofxChannelFx::setup_FxChannel()
 	ENABLE_Monochrome.setName("ENABLE MONOCHROME");
 	ENABLE_ThreeTones.setName("ENABLE THREETONES");
 	ENABLE_HSB.setName("ENABLE HSB");
-
-	params_Session.add(ENABLE_Monochrome);
-	params_Session.add(ENABLE_ThreeTones);
-	params_Session.add(ENABLE_HSB);
-
-	//extra fx
 #ifdef INCLUDE_FX_DELAYS
 	ENABLE_Delay.makeReferenceTo(frag4.active);
 	ENABLE_Echotrace.makeReferenceTo(frag5.active);
-
 	ENABLE_Delay.setName("ENABLE DELAY");
 	ENABLE_Echotrace.setName("ENABLE ECHOTRACE");
+#endif
 
-	params_Session.add(ENABLE_Delay);
-	params_Session.add(ENABLE_Echotrace);
+	params_Subcontrol.add(ENABLE_Monochrome);
+	params_Subcontrol.add(ENABLE_ThreeTones);
+	params_Subcontrol.add(ENABLE_HSB);
+
+	//extra fx
+#ifdef INCLUDE_FX_DELAYS
+	params_Subcontrol.add(ENABLE_Delay);
+	params_Subcontrol.add(ENABLE_Echotrace);
 #endif
 
 	//-
 
 	//main group for settings and callback
 	params_Control.setName("ofxChannelFx");
-	params_Control.add(params_Session);
+	params_Control.add(params_Subcontrol);
 	params_Control.add(params_Preset);
 
 	//--
@@ -243,17 +265,17 @@ void ofxChannelFx::setup_FxChannel()
 #ifdef INCLUDE_ofxGuiExtended2
 	guiPanel = gui.addPanel("CHANNEL FX");
 	guiGroup = guiPanel->addGroup("CHANNEL FX", ofJson{ {"show-header", false} });//avoid double header
-	//guiPanel = gui.addPanel("ofxChannelFx");
-	//guiGroup = guiPanel->addGroup("ofxChannelFx");
 
 	//main enabler
 	guiGroup->add(ENABLE_FxChain);
 	guiGroup->add(bMinimize);
+
 #ifdef USE_ofxPresetsManager
 	guiGroup->add(SHOW_Presets);
 #endif
 	guiGroup->add(ENABLE_Keys);
 #endif
+	guiGroup->add(bHeader);
 
 	//-
 
@@ -266,10 +288,6 @@ void ofxChannelFx::setup_FxChannel()
 #endif
 
 	params_PresetsManagerTools.add(presetsManager.getParamsControls());
-	//params_PresetsManagerTools.add(presetsManager.SHOW_ClickPanel);
-	//params_PresetsManagerTools.add(presetsManager.bRandomizeEditor);
-	//params_PresetsManagerTools.add(presetsManager.bRandomizeSelect);
-	//params_Session.add(params_PresetsManagerTools);
 
 #ifdef INCLUDE_ofxGuiExtended2
 	gui_FxPresets->add(params_PresetsManagerTools);
@@ -285,10 +303,10 @@ void ofxChannelFx::setup_FxChannel()
 
 #ifdef INCLUDE_ofxGuiExtended2
 	//1. user
-	gui_FxUser = guiGroup->addGroup(params_Session);
+	gui_FxUser = guiGroup->addGroup(params_Subcontrol);
 
 	//2. edit
-	gui_FxEdit = guiGroup->addGroup("EDIT");
+	gui_FxEdit = guiGroup->addGroup("SETTINGS");
 #endif
 
 	//-
@@ -457,24 +475,24 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				break;
 
 			case 1:
-				SELECT_Fx_Name = "MONOCHROME";
+				SELECT_Fx_Name = "1 MONOCHROME";
 				break;
 
 			case 2:
-				SELECT_Fx_Name = "THREETONES";
+				SELECT_Fx_Name = "2 THREETONES";
 				break;
 
 			case 3:
-				SELECT_Fx_Name = "HSB";
+				SELECT_Fx_Name = "3 HSB";
 				break;
 
 #ifdef INCLUDE_FX_DELAYS
 			case 4:
-				SELECT_Fx_Name = "DELAY";
+				SELECT_Fx_Name = "4 DELAY";
 				break;
 
 			case 5:
-				SELECT_Fx_Name = "ECHOTRACE";
+				SELECT_Fx_Name = "5 ECHOTRACE";
 				break;
 #endif
 			}
@@ -563,7 +581,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		//enabler toggles
 
-		else if (name == "ENABLE MONOCHROME")
+		else if (name == ENABLE_Monochrome.getName())
 		{
 			if (ENABLE_Monochrome.get() && bEnableGuiWorkflow) {
 				if (SELECT_Fx.get() != 1) {
@@ -573,10 +591,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				refreshi_ofxGuiExtended_Minimize();
+				//refreshi_ofxGuiExtended_Minimize();
+				refresh_Gui();
 			}
 		}
-		else if (name == "ENABLE THREETONES" && bEnableGuiWorkflow)
+		else if (name == ENABLE_ThreeTones.getName() && bEnableGuiWorkflow)
 		{
 			if (ENABLE_ThreeTones.get()) {
 				if (SELECT_Fx.get() != 2) {
@@ -586,10 +605,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				refreshi_ofxGuiExtended_Minimize();
+				//refreshi_ofxGuiExtended_Minimize();
+				refresh_Gui();
 			}
 		}
-		else if (name == "ENABLE HSB" && bEnableGuiWorkflow)
+		else if (name == ENABLE_HSB.getName() && bEnableGuiWorkflow)
 		{
 			if (ENABLE_HSB.get()) {
 				if (SELECT_Fx.get() != 3) {
@@ -599,11 +619,12 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				refreshi_ofxGuiExtended_Minimize();
+				//refreshi_ofxGuiExtended_Minimize();
+				refresh_Gui();
 			}
 		}
 #ifdef INCLUDE_FX_DELAYS
-		else if (name == "ENABLE DELAY" && bEnableGuiWorkflow)
+		else if (name == ENABLE_Delay.getName() && bEnableGuiWorkflow)
 		{
 			if (ENABLE_Delay.get()) {
 				if (SELECT_Fx.get() != 4) {
@@ -613,10 +634,11 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				refreshi_ofxGuiExtended_Minimize();
+				//refreshi_ofxGuiExtended_Minimize();
+				refresh_Gui();
 			}
 		}
-		else if (name == "ENABLE ECHOTRACE" && bEnableGuiWorkflow)
+		else if (name == ENABLE_Echotrace.getName() && bEnableGuiWorkflow)
 		{
 			if (ENABLE_Echotrace.get()) {
 				if (SELECT_Fx.get() != 5) {
@@ -626,7 +648,8 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				refreshi_ofxGuiExtended_Minimize();
+				//refreshi_ofxGuiExtended_Minimize();
+				refresh_Gui();
 			}
 		}
 #endif
@@ -635,7 +658,7 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		//reset
 
-		else if (name == "RESET")
+		else if (name == RESET.getName())
 		{
 			if (RESET.get()) {
 				RESET = false;
@@ -735,25 +758,8 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 				bMinimize = false;
 
 #ifdef INCLUDE_ofxGuiExtended2
-				//TODO: crashes..
-				//if (gui_FxPresets->getMinimized() && gui_FxUser->getMinimized() && gui_FxEdit->getMinimized())
-				//{
-				//	gui_FxUser->maximize();
-				//	//return;
-				//}
-				//else
-				//{
-				//	gui_FxPresets->minimize();
-				//	gui_FxUser->minimize();
-				//	gui_FxEdit->minimize();
-				//}
-
 				gui_FxUser->maximize();
 				gui_FxEdit->minimize();
-
-				// crashes
-				//gui_FxPresets->minimize();
-				//gui_FxPresets->minimizeAll();
 #endif
 
 #ifdef INCLUDE_ofxGui
@@ -809,6 +815,7 @@ void ofxChannelFx::keyPressed(int key) {
 		if (key == OF_KEY_UP) {
 			if (SELECT_Fx.get() > 0) SELECT_Fx--;
 		}
+
 		else if (key == OF_KEY_DOWN) {
 
 #ifndef INCLUDE_FX_DELAYS
@@ -816,8 +823,8 @@ void ofxChannelFx::keyPressed(int key) {
 #else
 			if (SELECT_Fx.get() < 5) SELECT_Fx++;
 #endif
-
 		}
+
 		else if (key == OF_KEY_BACKSPACE) {
 			doReset();
 		}
@@ -828,10 +835,6 @@ void ofxChannelFx::keyPressed(int key) {
 void ofxChannelFx::begin() {
 	//if (ENABLE_FxChain)
 	{
-		//TODO:
-		//bArbPRE = ofGetUsingArbTex();
-		//ofDisableArbTex();
-
 		fbo_FxChain.begin();
 		ofClear(0, 0, 0, 0);
 	}
@@ -842,10 +845,6 @@ void ofxChannelFx::end() {
 	//if (ENABLE_FxChain)
 	{
 		fbo_FxChain.end();
-
-		//TODO:
-		//if (bArbPRE) ofEnableArbTex();
-		//else ofDisableArbTex();
 	}
 }
 
@@ -854,9 +853,6 @@ void ofxChannelFx::update_FxChannel()
 {
 	if (ENABLE_FxChain)
 	{
-		//bArbPRE = ofGetUsingArbTex();
-		//ofDisableArbTex();
-
 		//fx
 		frag1.apply(fbo_FxChain);
 		frag3.apply(fbo_FxChain);
@@ -868,9 +864,6 @@ void ofxChannelFx::update_FxChannel()
 		frag5.apply(fbo_FxChain);
 		//frag6.apply(fbo_FxChain);
 #endif
-
-		//if (bArbPRE) ofEnableArbTex();
-		//else ofDisableArbTex();
 	}
 }
 
@@ -916,34 +909,17 @@ void ofxChannelFx::draw()
 //--------------------------------------------------------------
 void ofxChannelFx::setup_GuiTheme()
 {
-
 #ifdef INCLUDE_ofxGuiExtended2
-
-	//-
-
-	//gui theme
-	//must check before if the used font file is present
-	std::string str = "telegrama_render.otf";
-	std::string _path = "assets/fonts/" + str;// /data/assets
-	ofFile file(_path);
-	bool b = file.exists();// must check if the linked font into json is located there! to avoid exception crash..
-	if (b)
-	{
-		ofLogNotice(__FUNCTION__) << _path << " FOUND";
-	}
-	else
-	{
-		ofLogError(__FUNCTION__) << _path << " NOT FOUND!";
-	}
-	if (b)//located font so we can avoid exception if not...
-	{
-		guiPanel->loadTheme("assets/theme/theme_ofxGuiExtended2.json");
-	}
-
-	//-
 
 	//default
 	guiPanel->setPosition(20, 20);
+
+	//-
+
+	//theme
+	path_Theme = "assets/theme/";
+	path_Theme += "theme_ofxGuiExtended2_01.json";
+	loadTheme(path_Theme);
 
 	//-
 
@@ -977,33 +953,15 @@ void ofxChannelFx::setup_GuiTheme()
 	{
 		//{"fill-color", "rgba(128,128,128,0.4)" },
 		//{"type", "fullsize"},
-		{"height", 30},
+		{"height", 35},
 		//{"text-align", "center"}
 	};
-
-	//j_TextBig =//not working bc are headers
-	//{
-	//	//{"fill-color", "rgba(128,128,128,0.4)" },
-	//	//{"type", "fullsize"},
-	//	{"height", 30},
-	//	{"text-align", "center"},
-	//	{"font-size	", 30}
-	//};
-	//
-	//not working bc are headers..
-	//gui_FxUser->setConfig(j_TextBig);
-	//gui_FxEdit->setConfig(j_TextBig);
-	//(gui_FxUser->getControl(SELECT_Fx_Name.getName()))->setConfig(j_TextBig);
 
 	(guiGroup->getControl(ENABLE_FxChain.getName()))->setConfig(j_ButtonBig);
 	(guiGroup->getControl(ENABLE_FxChain.getName()))->setConfig({ {"text-align", "center"} });
 
 	//1. user
-	//(gui_FxUser->getControl(SELECT_Fx_Name.getName()))->setConfig(j_SliderBig);
-	//(gui_FxUser->getControl(SELECT_Fx_Name.getName()))->setShowName(false);
 	(gui_FxUser->getControl(SELECT_Fx.getName()))->setConfig(j_SliderBig);
-	//(gui_FxUser->getControl(SELECT_Solo.getName()))->setConfig(j_ButtonBig);
-	//(gui_FxUser->getControl(RESET.getName()))->setConfig(j_ButtonBig);
 
 	//2. editor
 	(gui_FxUser->getControl(ENABLE_Monochrome.getName()))->setConfig(j_ButtonBig);
@@ -1014,10 +972,9 @@ void ofxChannelFx::setup_GuiTheme()
 	(gui_FxUser->getControl(ENABLE_Echotrace.getName()))->setConfig(j_ButtonBig);
 #endif
 
-	//-
-
 #endif
 }
+
 //--------------------------------------------------------------
 void ofxChannelFx::refreshi_ofxGuiExtended_Minimize() {// for gui extended only!
 #ifdef INCLUDE_ofxGuiExtended2
@@ -1187,10 +1144,13 @@ void ofxChannelFx::exit()
 
 	//settings 
 
-	//TODO: not required
-	//ofxSurfingHelpers::saveGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
-
 #ifndef INCLUDE_ofxPresetsManager
 	ofxSurfingHelpers::saveGroup(params_Preset, path_GLOBAL_Folder + "/" + path_fileName_Preset);
 #endif
+
+#ifdef INCLUDE_ofxGuiExtended2
+	position_Gui = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
+#endif
+
+	ofxSurfingHelpers::saveGroup(params_Session, path_GLOBAL_Folder + "/" + path_fileName_Session);
 }

@@ -72,7 +72,8 @@ public:
 		path_GLOBAL_Folder = "ofxChannelFx";
 
 		//TODO: not required
-		//path_fileName_Session = "ofxChannelFx_Session.xml";
+		path_fileName_Session = "ofxChannelFx_Session.xml";
+
 #ifndef INCLUDE_ofxPresetsManager
 		path_fileName_Preset = "ofxChannelFx_Preset.xml";//not used when using presetsManager
 #endif
@@ -99,13 +100,6 @@ private:
 	void refresh_ofxGui_minimize(bool bUseSolo = false);
 	void refreshi_ofxGuiExtended_Minimize();
 
-public:
-	//--------------------------------------------------------------
-	void loadTheme(const string &filename) {
-		guiPanel->loadTheme(filename);
-	}
-
-
 	//--
 
 	//feed the fx processor
@@ -117,7 +111,7 @@ public:
 
 private:
 	//ofParameter<bool> SHOW_DOT_FX;
-	ofParameter<int> SELECT_Fx{ "SELECT FX", 0, 0, 3 };	//select the fx to edit/show gui panel
+	ofParameter<int> SELECT_Fx{ "SELECT FX", 1, 1, 3 };	//select the fx to edit/show gui panel
 	ofParameter<std::string> SELECT_Fx_Name{ "FX","" };		//fx name
 	ofParameter<bool> SELECT_Solo{ "SOLO", false };		//mute the other fx
 	ofParameter<bool> RESET{ "RESET", false };			//reset selected fx
@@ -137,6 +131,7 @@ private:
 #endif
 
 	ofParameterGroup params_Session;
+	ofParameterGroup params_Subcontrol;
 	ofParameterGroup params_Editor;
 	ofParameterGroup params_Preset;
 	ofParameterGroup params_Control;
@@ -246,14 +241,14 @@ private:
 	//settings
 private:
 	std::string path_GLOBAL_Folder;
-	//std::string path_fileName_Session;
+	std::string path_fileName_Session;
 
 #ifndef INCLUDE_ofxPresetsManager
 	std::string path_fileName_Preset;
 #endif
 
 private:
-	ofParameter<glm::vec2> gPos;
+	ofParameter<glm::vec2> position_Gui;
 
 	//----
 
@@ -270,29 +265,29 @@ public:
 	glm::vec2 getGuiPosition()
 	{
 #ifdef INCLUDE_ofxGuiExtended2
-		gPos = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
+		position_Gui = glm::vec2(guiPanel->getPosition().x, guiPanel->getPosition().y);
 #endif
 
 #ifdef INCLUDE_ofxGui
-		gPos = glm::vec2(gui.getPosition().x, gui.getPosition().y);
+		position_Gui = glm::vec2(gui.getPosition().x, gui.getPosition().y);
 #endif
 
-		return gPos.get();
+		return position_Gui.get();
 	}
 	//--------------------------------------------------------------
 	void setGuiPosition(int x, int y) {
-		setGuiPosition (glm::vec2(x, y));
+		setGuiPosition(glm::vec2(x, y));
 	}
 	//--------------------------------------------------------------
 	void setGuiPosition(glm::vec2 pos) {
-		gPos = pos;
+		position_Gui = pos;
 
 #ifdef INCLUDE_ofxGuiExtended2
-		guiPanel->setPosition(gPos.get().x, gPos.get().y);
+		guiPanel->setPosition(position_Gui.get().x, position_Gui.get().y);
 #endif
 
 #ifdef INCLUDE_ofxGui
-		gui.setPosition(gPos.get().x, gPos.get().y);
+		gui.setPosition(position_Gui.get().x, position_Gui.get().y);
 #endif
 	}
 	//--------------------------------------------------------------
@@ -353,44 +348,25 @@ public:
 		return params_ControlExternal;
 	}
 
-	//bool ENABLE_Active = true;
-	//void setActive(bool b);
-	//void setGuiVisible(bool b);
-	//
-	//	ofParameter<bool> SHOW_gui = true;//independent to autohide state
-	//	ofEventListener listener_SHOW_gui;
-	//	void Changed_SHOW_gui();
-	//
-	//	ofParameter<int> MODE_App;
-	//	ofEventListener listener_MODE_App;
-	//	void Changed_MODE_App();
-	//
-	//public:
-	//
-	//	void loadPreset(int p)
-	//	{
-	//		//cout << "loadPreset:" << p << endl;
-	//		presetsManager.loadPreset(p);
-	//	}
-	//	void setUserVisible(bool b)
-	//	{
-	//		//presets
-	//		presetsManager.setVisible_PresetClicker(b);
-	//		presetsManager.setEnableKeys(b);
-	//	}
-	//
-	//	void setMODE_App(int m)
-	//	{
-	//		MODE_App = m;
-	//	}
+	//-
 
-	//--
-
-	//bool ENABLE_Keys = false;
 public:
+	//--------------------------------------------------------------
 	void setEnableKeys(bool b) {
 		ENABLE_Keys = b;
 	}
 	void keyPressed(int key);
 
+	//-
+
+private:
+	std::string path_Theme;
+
+public:
+	//--------------------------------------------------------------
+	void loadTheme(std::string _path) {
+		ofLogNotice(__FUNCTION__) << " : " << path_Theme;
+		path_Theme = _path;
+		guiPanel->loadTheme(path_Theme);
+	}
 };
