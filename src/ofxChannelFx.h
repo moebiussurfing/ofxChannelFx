@@ -12,8 +12,8 @@
 //#define INCLUDE_ofxPresetsManager	
 
 // 2. you can choice one of the two implemented gui's:
-//#define INCLUDE_ofxGui	// simpler gui
-#define INCLUDE_ofxGuiExtended2	// better gui
+//#define INCLUDE_ofxGui // simpler gui
+#define INCLUDE_ofxGuiExtended2 // better gui
 
 // 3. to include some extra fx's: delay and echotrace
 #define INCLUDE_FX_DELAYS	
@@ -149,9 +149,9 @@ public:
 	void setVflip(bool b) {
 		vflip = b;
 	}
-private:
-	//bool bArbPRE;//to debug and avoid conflict with other addons or fbo modes...
 
+	//dot fx shaders
+private:
 	//basic fx
 	ofx::dotfrag::Monochrome frag1;
 	ofx::dotfrag::ThreeTones frag2;
@@ -359,6 +359,7 @@ public:
 
 	//-
 
+#ifdef INCLUDE_ofxGuiExtended2
 private:
 	std::string path_Theme;
 
@@ -369,4 +370,5 @@ public:
 		path_Theme = _path;
 		guiPanel->loadTheme(path_Theme);
 	}
+#endif
 };

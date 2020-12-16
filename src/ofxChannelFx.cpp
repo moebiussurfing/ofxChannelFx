@@ -214,6 +214,7 @@ void ofxChannelFx::setup_FxChannel()
 	params_Session.add(SELECT_Fx);
 	params_Session.add(SELECT_Solo);
 	params_Session.add(position_Gui);
+	params_Session.add(bHeader);
 
 	//gui
 
@@ -273,9 +274,10 @@ void ofxChannelFx::setup_FxChannel()
 #ifdef USE_ofxPresetsManager
 	guiGroup->add(SHOW_Presets);
 #endif
+
 	guiGroup->add(ENABLE_Keys);
-#endif
 	guiGroup->add(bHeader);
+#endif
 
 	//-
 
@@ -315,7 +317,6 @@ void ofxChannelFx::setup_FxChannel()
 	//guiGroup->add(bHeader);//hidden from gui or not
 
 	//to use callbacks only
-	//bMinimize.set("MINIMIZE");
 	params_Control.add(bMinimize);
 #ifdef USE_ofxPresetsManager
 	params_Control.add(SHOW_Presets);
@@ -591,7 +592,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				//refreshi_ofxGuiExtended_Minimize();
 				refresh_Gui();
 			}
 		}
@@ -605,7 +605,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				//refreshi_ofxGuiExtended_Minimize();
 				refresh_Gui();
 			}
 		}
@@ -619,7 +618,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				//refreshi_ofxGuiExtended_Minimize();
 				refresh_Gui();
 			}
 		}
@@ -634,7 +632,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				//refreshi_ofxGuiExtended_Minimize();
 				refresh_Gui();
 			}
 		}
@@ -648,7 +645,6 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 			}
 			else
 			{
-				//refreshi_ofxGuiExtended_Minimize();
 				refresh_Gui();
 			}
 		}
@@ -751,14 +747,14 @@ void ofxChannelFx::Changed_params_Control(ofAbstractParameter &e)
 
 		//minimize
 
-		else if (name == "MINIMIZE")
+		else if (name == bMinimize.getName())
 		{
 			if (bMinimize.get())
 			{
 				bMinimize = false;
 
 #ifdef INCLUDE_ofxGuiExtended2
-				gui_FxUser->maximize();
+				gui_FxUser->minimize();
 				gui_FxEdit->minimize();
 #endif
 
@@ -972,6 +968,14 @@ void ofxChannelFx::setup_GuiTheme()
 	(gui_FxUser->getControl(ENABLE_Echotrace.getName()))->setConfig(j_ButtonBig);
 #endif
 
+	gFrag1->getControl(ENABLE_Monochrome.getName())->setConfig(j_ButtonBig);
+	gFrag2->getControl(ENABLE_ThreeTones.getName())->setConfig(j_ButtonBig);
+	gFrag3->getControl(ENABLE_HSB.getName())->setConfig(j_ButtonBig);
+#ifdef INCLUDE_FX_DELAYS
+	gFrag4->getControl(ENABLE_Delay.getName())->setConfig(j_ButtonBig);
+	gFrag5->getControl(ENABLE_Echotrace.getName())->setConfig(j_ButtonBig);
+#endif
+
 #endif
 }
 
@@ -1096,8 +1100,6 @@ void ofxChannelFx::refresh_Gui()// extended or simple gui
 
 #ifdef INCLUDE_ofxGuiExtended2
 
-	//-
-
 	//minimize all
 	gFrag1->minimize();
 	gFrag2->minimize();
@@ -1107,6 +1109,8 @@ void ofxChannelFx::refresh_Gui()// extended or simple gui
 	gFrag5->minimize();
 	//gFrag6->minimize();
 #endif
+
+	//-
 
 	//workflow
 	//expand selected fx panel
