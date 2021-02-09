@@ -550,3 +550,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+example-BasicNoPresets/config.make
+example-BasicNoPresets/Makefile
+example-BasicNoPresets/openFrameworks-Info.plist
+example-BasicNoPresets/Project.xcconfig
+example-BasicPresets/config.make
+example-BasicPresets/Makefile
+example-BasicPresets/openFrameworks-Info.plist
+example-BasicPresets/Project.xcconfig

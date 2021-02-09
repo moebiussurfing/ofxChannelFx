@@ -1,4 +1,4 @@
-ofxGui
 ofxChannelFx
+ofxGui
 ofxGuiExtended2
 ofxSurfingHelpers

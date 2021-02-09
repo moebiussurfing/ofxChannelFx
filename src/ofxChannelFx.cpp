@@ -9,6 +9,7 @@ void ofxChannelFx::fboAllocate()
 	//-
 
 	bool bArbPRE = ofGetUsingArbTex();
+    
 	ofDisableArbTex();
 	{
 		ofFbo::Settings fboSettings;
@@ -40,6 +41,7 @@ void ofxChannelFx::fboAllocate()
 #endif
 
 	}
+    
 	if (bArbPRE) ofEnableArbTex();
 	else ofDisableArbTex();
 }
