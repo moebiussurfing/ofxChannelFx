@@ -1,9 +1,9 @@
 
 > [!CAUTION]
-> Deprecated.
-> Moved to [ofxSurfingFxChannel](https://github.com/moebiussurfing/ofxSurfingFxChannel)
+> Deprecated.  
+> Moved to [ofxSurfingFxChannel](https://github.com/moebiussurfing/ofxSurfingFxChannel)  
 
-----
+
 
 ofxChannelFx
 =============================
